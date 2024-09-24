@@ -14,7 +14,6 @@ public class UiItemDescription : MonoBehaviour
         ResetDescription();
     }
 
-    // Reset the image,the  title and the text
     public void ResetDescription()
     {
         itemImage.gameObject.SetActive(false);
@@ -23,7 +22,6 @@ public class UiItemDescription : MonoBehaviour
         priceText.text = string.Empty;
     }
 
-    // Set the description of item in the UI
     public void SetDescription(Sprite spriteImage, string itemName, string itemDescription, int itemPrice)
     {
         itemImage.gameObject.SetActive(true);
