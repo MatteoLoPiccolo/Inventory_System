@@ -50,9 +50,7 @@ public class ShopController : MonoBehaviour
         shopUI.OnDescriptionRequested += OnDescriptionRequested;
 
         foreach (var item in shopData.GetCurrentShopItemState())
-        {
             shopUI.UpdateData(item.Key, item.Value.Item.ItemImage, item.Value.Quantity);
-        }
     }
 
     private void OnDescriptionRequested(int itemIndex)
@@ -69,8 +67,6 @@ public class ShopController : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.I))
-        {
             uiManager.ToggleShop();
-        }
     }
 }

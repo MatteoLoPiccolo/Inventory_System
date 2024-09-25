@@ -11,15 +11,11 @@ public class ShopSO : ScriptableObject
     {
         // if the list has no element in inspector or is empty
         if (shopItems == null || shopItems.Count == 0)
-        {
             shopItems = new List<Items>(size);
-        }
 
         // Add item only if there are some empty spaces
         for (int i = shopItems.Count; i < size; i++)
-        {
             shopItems.Add(Items.GetEmptyItem());
-        }
     }
 
     public Dictionary<int, Items> GetCurrentShopItemState()
@@ -27,10 +23,8 @@ public class ShopSO : ScriptableObject
         Dictionary<int, Items> shopItemState = new Dictionary<int, Items>();
 
         for (int i = 0; i < shopItems.Count; i++)
-        {
             if (!shopItems[i].IsEmpty)
                 shopItemState[i] = shopItems[i];
-        }
 
         return shopItemState;
     }
@@ -38,9 +32,7 @@ public class ShopSO : ScriptableObject
     public Items GetItemAt(int itemIndex)
     {
         if (itemIndex < 0 || itemIndex >= shopItems.Count)
-        {
             throw new IndexOutOfRangeException();
-        }
 
         return shopItems[itemIndex];
     }
@@ -48,9 +40,7 @@ public class ShopSO : ScriptableObject
     public void RemoveItemAt(int itemIndex)
     {
         if (itemIndex < 0 || itemIndex >= shopItems.Count)
-        {
             throw new IndexOutOfRangeException();
-        }
 
         shopItems[itemIndex] = Items.GetEmptyItem();
     }

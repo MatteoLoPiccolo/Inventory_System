@@ -8,6 +8,8 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private PlayerInventoryUI inventoryUI;
     [SerializeField] private int inventoryMoney;
 
+    private Dictionary<ItemSO, int> inventory = new Dictionary<ItemSO, int>();
+
     public event Action<int> OnMoneyChanged; 
     public event Action OnInventoryChanged;
 
@@ -20,9 +22,6 @@ public class PlayerInventory : MonoBehaviour
             OnMoneyChanged?.Invoke(inventoryMoney);
         }
     }
-
-
-    private Dictionary<ItemSO, int> inventory = new Dictionary<ItemSO, int>();
 
     private void Awake()
     {
@@ -72,10 +71,9 @@ public class PlayerInventory : MonoBehaviour
     public void UpdateUI()
     {
         inventoryUI.Clear();
+
         foreach (var item in inventory)
-        {
             inventoryUI.AddItemUI(item.Key, item.Value);
-        }
     }
 
     public bool CanAfford(int cost)

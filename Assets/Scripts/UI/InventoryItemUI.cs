@@ -14,9 +14,6 @@ public class InventoryItemUI : MonoBehaviour
 
     public void SetItem(ItemSO item, int quantity)
     {
-        //itemImage.sprite = item.ItemImage;
-        //quantityText.text = quantity.ToString();
-
         if (item == null)
         {
             Debug.LogError("ItemSO is null in SetItem");
@@ -32,7 +29,5 @@ public class InventoryItemUI : MonoBehaviour
             quantityText.text = quantity.ToString();
         else
             Debug.LogError("Item quantity text is not assigned in InventoryItemUI");
-
-        Debug.Log($"SetItem called with item: {item.ItemName}, quantity: {quantity}");
     }
 }
