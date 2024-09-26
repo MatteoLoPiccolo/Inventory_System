@@ -10,7 +10,6 @@ public class UIController : MonoBehaviour
     [SerializeField] private PlayerInventory playerInventory;
     [SerializeField] private PlayerInventoryUI playerInventoryUI;
     [SerializeField] private TMP_Text playerMoneyText;
-    [SerializeField] private ShopController shopController;
     [SerializeField] private ShopUI shopUI;
     [SerializeField] private TMP_Text shopMoneyText;
 
@@ -19,7 +18,7 @@ public class UIController : MonoBehaviour
     private void Start()
     {
         playerInventory.OnMoneyChanged += UpdatePlayerMoneyUI;
-        shopController.OnMoneyChanged += UpdateShopMoneyUI;
+        GameManager.Instance.GetShopController().OnMoneyChanged += UpdateShopMoneyUI;
         
         ShowPlayerInventory();
         SetTextMoneyUI();
@@ -74,7 +73,7 @@ public class UIController : MonoBehaviour
             Debug.LogError("playerMoneyText is null");
 
         if (shopMoneyText)
-            shopMoneyText.text = $"Shop $ : {shopController.ShopMoney}";
+            shopMoneyText.text = $"Shop $ : {GameManager.Instance.GetShopController().ShopMoney}";
         else
             Debug.LogError("shopMoneyText is null");
     }

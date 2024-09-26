@@ -1,13 +1,13 @@
 using System;
 using UnityEngine;
 
-public class ShopController : MonoBehaviour
+public class ShopController
 {
     [SerializeField] private ShopUI shopUI;
     [SerializeField] private ShopSO shopData;
     [SerializeField] private UIController uiManager;
     [SerializeField] private int shopItemsListSize = 7;
-    [SerializeField] private int shopMoney;
+    [SerializeField] private int shopMoney = 1000;
 
     public event Action<int> OnMoneyChanged;
 
@@ -22,35 +22,32 @@ public class ShopController : MonoBehaviour
         }
     }
 
-    public int GetMoney()
-    { 
-        return ShopMoney; 
+    public ShopController(ShopUI shopUI, ShopSO shopData, UIController uiManager, int shopItemsListSize = 7, int initialMoney = 1000)
+    {
+        this.shopUI = shopUI;
+        this.shopData = shopData;
+        this.uiManager = uiManager;
+        this.shopItemsListSize = shopItemsListSize;
+        this.shopMoney = initialMoney;
+
+        InitializeShopController();
     }
 
-    public void SetMoney(int newAmount)
+    private void InitializeShopController()
     {
-        ShopMoney = newAmount;
-    }
-
-    private void Awake()
-    {
-        shopMoney = 1000;
         shopData.Initialize(shopItemsListSize);
-    }
-
-    private void Start()
-    {
         SetUpUI();
     }
 
     private void SetUpUI()
     {
         shopUI.InitializeShopUIList(shopItemsListSize);
-
         shopUI.OnDescriptionRequested += OnDescriptionRequested;
 
         foreach (var item in shopData.GetCurrentShopItemState())
+        {
             shopUI.UpdateData(item.Key, item.Value.Item.ItemImage, item.Value.Quantity);
+        }
     }
 
     private void OnDescriptionRequested(int itemIndex)
@@ -64,9 +61,7 @@ public class ShopController : MonoBehaviour
         shopUI.UpdateDescription(itemIndex, item.ItemImage, item.ItemName, item.Description, item.Price);
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.I))
-            uiManager.ToggleShop();
-    }
+    public int GetMoney() => ShopMoney;
+
+    public void SetMoney(int newAmount) => ShopMoney = newAmount;
 }
