@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    [SerializeField] private List<Items> playerItems;
+    [SerializeField] private List<Items> playerInventoryItems;
     [SerializeField] private PlayerInventoryUI inventoryUI;
     [SerializeField] private int inventoryMoney;
+
+    private Dictionary<ItemSO, int> inventory = new Dictionary<ItemSO, int>();
 
     public event Action<int> OnMoneyChanged; 
     public event Action OnInventoryChanged;
@@ -21,8 +23,6 @@ public class PlayerInventory : MonoBehaviour
         }
     }
 
-    private Dictionary<ItemSO, int> inventory = new Dictionary<ItemSO, int>();
-
     private void Awake()
     {
         inventoryMoney = 100;
@@ -31,13 +31,13 @@ public class PlayerInventory : MonoBehaviour
 
     private void Start()
     {
-        playerItems = new List<Items>();
+        playerInventoryItems = new List<Items>();
     }
 
     private void ResetInventory()
     {
         inventory.Clear();
-        playerItems.Clear();
+        playerInventoryItems.Clear();
         inventoryUI.Clear();
     }
 
@@ -58,12 +58,12 @@ public class PlayerInventory : MonoBehaviour
         else
             inventory[item] = quantity;
 
-        Items existingItem = playerItems.Find(i => i.Item == item);
+        Items existingItem = playerInventoryItems.Find(i => i.Item == item);
 
         if (existingItem != null)
             existingItem.ChangeQuantity(existingItem.Quantity + quantity);
         else
-            playerItems.Add(new Items(item, quantity));
+            playerInventoryItems.Add(new Items(item, quantity));
 
         OnInventoryChanged?.Invoke();
     }
@@ -71,10 +71,9 @@ public class PlayerInventory : MonoBehaviour
     public void UpdateUI()
     {
         inventoryUI.Clear();
+
         foreach (var item in inventory)
-        {
-            inventoryUI.AddItem(item.Key, item.Value);
-        }
+            inventoryUI.AddItemUI(item.Key, item.Value);
     }
 
     public bool CanAfford(int cost)
@@ -84,6 +83,6 @@ public class PlayerInventory : MonoBehaviour
 
     public List<Items> GetPlayerItems()
     {
-        return playerItems;
+        return playerInventoryItems;
     }
 }

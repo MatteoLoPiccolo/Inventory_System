@@ -79,12 +79,12 @@ public class UIController : MonoBehaviour
             Debug.LogError("shopMoneyText is null");
     }
 
-    private void UpdatePlayerMoneyUI(int newMoney)
+    public void UpdatePlayerMoneyUI(int newMoney)
     {
         playerMoneyText.text = $"Player $: {newMoney}";
     }
 
-    private void UpdateShopMoneyUI(int newMoney)
+    public void UpdateShopMoneyUI(int newMoney)
     {
         shopMoneyText.text = $"Shop $ : {newMoney}";
     }

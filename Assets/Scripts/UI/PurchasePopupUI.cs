@@ -55,9 +55,7 @@ public class PurchasePopup : MonoBehaviour
             OnClose?.Invoke();
         }
         else
-        {
             Debug.Log("You don't have enough money!");
-        }
     }
 
     private void OnClosePopup()

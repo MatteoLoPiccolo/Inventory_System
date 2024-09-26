@@ -19,13 +19,10 @@ public class ShopItemUI : MonoBehaviour, IPointerClickHandler
     private void ResetItem()
     {
         if (itemImage != null)
-        {
             itemImage.gameObject.SetActive(false);
-        }
+
         if (itemQuantityText != null)
-        {
             itemQuantityText.text = string.Empty;
-        }
     }
 
     public void SetItem(Sprite spriteImage, int quantity)
@@ -36,20 +33,14 @@ public class ShopItemUI : MonoBehaviour, IPointerClickHandler
             itemImage.sprite = spriteImage;
         }
         if (itemQuantityText != null)
-        {
             itemQuantityText.text = quantity.ToString();
-        }
     }
 
     public void OnPointerClick(PointerEventData eventData)
     {
         if (eventData.button == PointerEventData.InputButton.Right)
-        {
             OnRightMouseButtonClicked?.Invoke(this);
-        }
         else
-        {
             OnItemClicked?.Invoke(this);
-        }
     }
 }

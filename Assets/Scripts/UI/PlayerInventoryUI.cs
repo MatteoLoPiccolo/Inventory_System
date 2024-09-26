@@ -8,6 +8,8 @@ public class PlayerInventoryUI : MonoBehaviour
     [SerializeField] private RectTransform contentRectTransform;
     [SerializeField] private TMP_Text moneyText;
 
+    [SerializeField] private UIController uIController;
+
     private void Start()
     {
         playerInventory.OnInventoryChanged += UpdateInventoryUI;
@@ -15,20 +17,21 @@ public class PlayerInventoryUI : MonoBehaviour
 
     private void UpdateInventoryUI()
     {
-        Debug.Log("UpdateInventoryUI is called!");
+        Clear();
+
+        foreach (var item in playerInventory.GetPlayerItems())
+            AddItemUI(item.Item, item.Quantity);
     }
 
-    public void AddItem(ItemSO item, int quantity)
+    public void AddItemUI(ItemSO item, int quantity)
     {
-        InventoryItemUI newItem = Instantiate(itemPrefab);
+        InventoryItemUI newItem = Instantiate(itemPrefab, contentRectTransform);
         newItem.SetItem(item, quantity);
     }
 
     public void Clear()
     {
         foreach (Transform child in contentRectTransform)
-        {
             Destroy(child.gameObject);
-        }
     }
 }
