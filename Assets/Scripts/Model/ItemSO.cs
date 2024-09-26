@@ -4,7 +4,7 @@ using UnityEngine;
 public class ItemSO : ScriptableObject
 {
     [SerializeField] private string itemName;
-    [SerializeField] [field: TextArea] private string description;
+    [SerializeField][field: TextArea] private string description;
     [SerializeField] private Sprite itemImage;
     [SerializeField] private int price;
 

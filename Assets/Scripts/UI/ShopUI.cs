@@ -27,7 +27,7 @@ public class ShopUI : MonoBehaviour
         purchasePopupPrefab.gameObject.SetActive(false);
 
     }
-    
+
     // Initialize the list of items in the shop with a list
     public void InitializeShopUIList(int shopListSize)
     {
@@ -50,7 +50,7 @@ public class ShopUI : MonoBehaviour
     // Update the data with image and quantity
     public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)
     {
-        if (itemIndex < uiShopItems.Count) 
+        if (itemIndex < uiShopItems.Count)
             uiShopItems[itemIndex].SetItem(itemImage, itemQuantity);
     }
 
@@ -74,7 +74,7 @@ public class ShopUI : MonoBehaviour
     public void UiShopItem_OnRightMouseButtonClicked(ShopItemUI uIShopItem)
     {
         if (activePopupInstance)
-    {
+        {
             int index = uiShopItems.IndexOf(uIShopItem);
             if (index == -1)
                 return;
@@ -110,8 +110,12 @@ public class ShopUI : MonoBehaviour
         itemDescription.SetDescription(itemImage, name, description, price);
     }
 
-    public void UpdateMoneyText(int money)
+    public void ClosePopup()
     {
-        moneyText.text = "Money: " + money.ToString();
+        if (activePopupInstance != null)
+        {
+            Destroy(activePopupInstance.gameObject);
+            activePopupInstance = null;
+        }
     }
 }

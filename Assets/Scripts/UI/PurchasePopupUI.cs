@@ -49,7 +49,7 @@ public class PurchasePopup : MonoBehaviour
             GameManager.Instance.GetShopController().SetMoney(newShopMoneyAMount);
 
             playerInventory.AddItem(item.Item, item.Quantity);
-            
+
             OnClose?.Invoke();
         }
         else

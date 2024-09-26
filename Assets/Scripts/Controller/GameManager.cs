@@ -1,11 +1,10 @@
-using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
     [SerializeField] private ShopUI shopUI;
     [SerializeField] private ShopSO shopData;
-    [SerializeField] private UIController uiManager;
+    [SerializeField] private UIController uiController;
 
     private ShopController shopController;
     private InputManager inputManager;
@@ -17,7 +16,7 @@ public class GameManager : MonoBehaviour
     private void Awake()
     {
         if (instance != null && instance != this)
-        {   
+        {
             Destroy(gameObject);
         }
         else
@@ -25,15 +24,30 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
 
+        shopController = new ShopController(shopUI, shopData, uiController, 7, 1000);
         inputManager = new InputManager();
-        shopController = new ShopController(shopUI, shopData, uiManager, 7, 1000);
     }
+
+    private void Start()
+    {
+        Debug.Log("GameManager Start");
+        if (uiController == null)
+        {
+            Debug.LogError("UIController is null in GameManager!");
+        }
+        else
+        {
+            inputManager.OnInventoryTogglePressed += uiController.ToggleShop;
+        }
+    }
+
 
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.I))
         {
-            uiManager.ToggleShop();
+            Debug.Log("Inventory Toggle Pressed");
+            inputManager.HandleInput();
         }
     }
 

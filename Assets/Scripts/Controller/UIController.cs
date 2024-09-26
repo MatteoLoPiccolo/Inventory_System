@@ -1,5 +1,5 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class UIController : MonoBehaviour
 {
@@ -19,7 +19,7 @@ public class UIController : MonoBehaviour
     {
         playerInventory.OnMoneyChanged += UpdatePlayerMoneyUI;
         GameManager.Instance.GetShopController().OnMoneyChanged += UpdateShopMoneyUI;
-        
+
         ShowPlayerInventory();
         SetTextMoneyUI();
     }
@@ -46,6 +46,8 @@ public class UIController : MonoBehaviour
         inventoryText.gameObject.SetActive(true);
 
         isShopOpen = false;
+
+        GameManager.Instance.GetShopController().GetShopUI().ClosePopup();
     }
 
     // Use CanvasGroup to manage visibility and interaction
@@ -59,6 +61,8 @@ public class UIController : MonoBehaviour
     // If the shop is visible, the inventory is invisible and viceversa
     public void ToggleShop()
     {
+        Debug.Log("ToggleShop called");
+
         if (isShopOpen)
             ShowPlayerInventory();
         else

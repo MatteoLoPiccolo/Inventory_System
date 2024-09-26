@@ -10,7 +10,7 @@ public class PlayerInventory : MonoBehaviour
 
     private Dictionary<ItemSO, int> inventory = new Dictionary<ItemSO, int>();
 
-    public event Action<int> OnMoneyChanged; 
+    public event Action<int> OnMoneyChanged;
     public event Action OnInventoryChanged;
 
     public int InventoryMoney
@@ -18,7 +18,7 @@ public class PlayerInventory : MonoBehaviour
         get => inventoryMoney;
         private set
         {
-            inventoryMoney = value; 
+            inventoryMoney = value;
             OnMoneyChanged?.Invoke(inventoryMoney);
         }
     }

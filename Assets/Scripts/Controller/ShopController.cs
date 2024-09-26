@@ -54,7 +54,7 @@ public class ShopController
     {
         Items shopItem = shopData.GetItemAt(itemIndex);
 
-        if(shopItem.IsEmpty)
+        if (shopItem.IsEmpty)
             return;
 
         ItemSO item = shopItem.Item;
@@ -64,4 +64,6 @@ public class ShopController
     public int GetMoney() => ShopMoney;
 
     public void SetMoney(int newAmount) => ShopMoney = newAmount;
+
+    public ShopUI GetShopUI() => shopUI;
 }
