@@ -10,8 +10,6 @@ public class PurchasePopup : MonoBehaviour
     [SerializeField] private TMP_Text priceText;
     [SerializeField] private Button buyButton;
     [SerializeField] private Button backButton;
-
-    [SerializeField] private ShopController shopController;
     [SerializeField] private UIController uIController;
     [SerializeField] private ShopUI shopUI;
 
@@ -45,10 +43,10 @@ public class PurchasePopup : MonoBehaviour
         if (playerInventory.CanAfford(item.Item.Price))
         {
             int inventoryNewMoneyAmount = playerInventory.GetMoney() - item.Item.Price;
-            int newShopMoneyAMount = shopController.GetMoney() + item.Item.Price;
+            int newShopMoneyAMount = GameManager.Instance.GetShopController().GetMoney() + item.Item.Price;
 
             playerInventory.SetMoney(inventoryNewMoneyAmount);
-            shopController.SetMoney(newShopMoneyAMount);
+            GameManager.Instance.GetShopController().SetMoney(newShopMoneyAMount);
 
             playerInventory.AddItem(item.Item, item.Quantity);
             
