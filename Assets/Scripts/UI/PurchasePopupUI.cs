@@ -42,11 +42,11 @@ public class PurchasePopup : MonoBehaviour
 
         if (playerInventory.CanAfford(item.Item.Price))
         {
-            int inventoryNewMoneyAmount = playerInventory.GetMoney() - item.Item.Price;
-            int newShopMoneyAMount = GameManager.Instance.GetShopController().GetMoney() + item.Item.Price;
+            int playerNewMoneyAmount = playerInventory.GetMoney() - item.Item.Price;
+            int shopNewMoneyAmount = GameManager.Instance.GetShopController().ShopMoney + item.Item.Price;
 
-            playerInventory.SetMoney(inventoryNewMoneyAmount);
-            GameManager.Instance.GetShopController().SetMoney(newShopMoneyAMount);
+            playerInventory.SetMoney(playerNewMoneyAmount);
+            GameManager.Instance.GetShopController().SetMoney(shopNewMoneyAmount);
 
             playerInventory.AddItem(item.Item, item.Quantity);
 

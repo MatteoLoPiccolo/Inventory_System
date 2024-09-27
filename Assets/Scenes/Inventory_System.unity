@@ -354,6 +354,8 @@ MonoBehaviour:
   shopUI: {fileID: 5422085954351143117}
   shopData: {fileID: 11400000, guid: 3eed4c39e2e006b43b6fc9e21ed509bc, type: 2}
   uiController: {fileID: 8797912017164440862}
+  listCount: 7
+  shopMoney: 7
 --- !u!4 &644656451
 Transform:
   m_ObjectHideFlags: 0

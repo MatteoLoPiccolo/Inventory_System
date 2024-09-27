@@ -5,12 +5,12 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ShopUI shopUI;
     [SerializeField] private ShopSO shopData;
     [SerializeField] private UIController uiController;
-
+    [SerializeField] private int listCount = 7;
+    [SerializeField] private int shopMoney = 7;
+    
     private ShopController shopController;
     private InputManager inputManager;
-
     private static GameManager instance;
-
     public static GameManager Instance { get { return instance; } }
 
     private void Awake()
@@ -24,7 +24,7 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
 
-        shopController = new ShopController(shopUI, shopData, uiController, 7, 1000);
+        shopController = new ShopController(shopUI, shopData, uiController, listCount, shopMoney);
         inputManager = new InputManager();
     }
 

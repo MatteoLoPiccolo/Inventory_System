@@ -3,11 +3,12 @@ using UnityEngine;
 
 public class ShopController
 {
-    [SerializeField] private ShopUI shopUI;
-    [SerializeField] private ShopSO shopData;
-    [SerializeField] private UIController uiManager;
-    [SerializeField] private int shopItemsListSize = 7;
-    [SerializeField] private int shopMoney = 1000;
+    private ShopUI shopUI;
+    private ShopSO shopData;
+    private UIController uiManager;
+
+    private int shopItemsListSize = 7;
+    private int shopMoney = 1000;
 
     public event Action<int> OnMoneyChanged;
 
@@ -60,10 +61,15 @@ public class ShopController
         ItemSO item = shopItem.Item;
         shopUI.UpdateDescription(itemIndex, item.ItemImage, item.ItemName, item.Description, item.Price);
     }
+    public void SetMoney(int amount)
+    {
+        if (ShopMoney >= amount)
+        {
+            ShopMoney -= amount;
+        }
+    }
 
-    public int GetMoney() => ShopMoney;
-
-    public void SetMoney(int newAmount) => ShopMoney = newAmount;
+    public int GetShopItemsListSize() => shopItemsListSize;
 
     public ShopUI GetShopUI() => shopUI;
 }
