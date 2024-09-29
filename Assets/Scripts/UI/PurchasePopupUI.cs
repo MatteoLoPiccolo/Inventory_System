@@ -1,9 +1,8 @@
-using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PurchasePopup : MonoBehaviour
+public class PurchasePopupUI : MonoBehaviour
 {
     [SerializeField] private Image itemImage;
     [SerializeField] private TMP_Text itemNameText;
@@ -21,7 +20,7 @@ public class PurchasePopup : MonoBehaviour
 
     private ItemSO item;
 
-    public event Action OnClose;
+    //public event Action OnClose;
 
     public void Show(Sprite itemSprite, string itemName, int quantity, int price, int index, ShopSO shopData, PlayerInventory playerInventory)
     {
@@ -50,27 +49,29 @@ public class PurchasePopup : MonoBehaviour
 
             playerInventory.AddItem(item.Item, item.Quantity);
 
-            OnClose?.Invoke();
+            //GameManager.Instance.GetShopController().GetShopUI().ClosePopup();
+
+            //OnClose?.Invoke();
         }
         else
             Debug.Log("You don't have enough money!");
     }
 
-    private void OnClosePopup()
-    {
-        gameObject.SetActive(false);
-        OnClose?.Invoke();
-    }
+    //private void OnClosePopup()
+    //{
+    //    gameObject.SetActive(false);
+    //    OnClose?.Invoke();
+    //}
 
     private void OnEnable()
     {
         buyButton.onClick.AddListener(OnConfirmPurchase);
-        backButton.onClick.AddListener(OnClosePopup);
+        backButton.onClick.AddListener(GameManager.Instance.GetShopController().GetShopUI().ClosePopup);
     }
 
     private void OnDisable()
     {
         buyButton.onClick.RemoveListener(OnConfirmPurchase);
-        backButton.onClick.RemoveListener(OnClosePopup);
+        backButton.onClick.RemoveListener(GameManager.Instance.GetShopController().GetShopUI().ClosePopup);
     }
 }

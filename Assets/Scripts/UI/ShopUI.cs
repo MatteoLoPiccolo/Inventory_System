@@ -4,15 +4,12 @@ using UnityEngine;
 public class ShopUI : BaseInventoryUI<ShopItemUI>
 {
     [SerializeField] private ShopItemUI itemPrefab;
-    [SerializeField] private PurchasePopup purchasePopupPrefab;
+    [SerializeField] private PurchasePopupUI purchasePopupPrefab;
     [SerializeField] private PlayerInventory playerInventory;
     [SerializeField] private ShopSO shopItemSO;
-    [SerializeField] private UiItemDescription itemDescription;
 
     public event Action<int> OnItemLeftClicked;
     public event Action<int> OnItemRightClicked;
-
-    private PurchasePopup activePopupInstance;
 
     protected override void Awake()
     {
@@ -36,8 +33,12 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
 
     public void InitializeShopUIList(int listSize)
     {
-        
         InitializeUIList(listSize);
+    }
+
+    public new void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description, int price)
+    {
+        base.UpdateDescription(itemIndex, itemImage, name, description, price);
     }
 
     // Update the data with image and quantity
@@ -95,22 +96,7 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
     //    activePopupInstance.OnClose += () => activePopupInstance = null;
     //}
 
-    public override void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description, int price)
-    {
-        if (itemIndex < 0 || itemIndex >= uiItems.Count)
-            return;
-
-        itemDescription.SetDescription(itemImage, name, description, price);
-    }
-
-    public void ClosePopup()
-    {
-        if (activePopupInstance != null)
-        {
-            Destroy(activePopupInstance.gameObject);
-            activePopupInstance = null;
-        }
-    }
+    
 
     protected override void OnLeftClick(ShopItemUI itemUI)
     {
@@ -156,11 +142,21 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
 
         activePopupInstance.Show(newItem.Item.ItemImage, newItem.Item.ItemName, newItem.Quantity, newItem.Item.Price, newIndex, shopItemSO, playerInventory);
 
-        activePopupInstance.OnClose += () => activePopupInstance = null;
+        GameManager.Instance.OnSwitchUI += ClosePopup;
     }
 
     public override void Clear()
     {
         base.Clear();
+    }
+
+    private void OnEnable()
+    {
+        GameManager.Instance.OnSwitchUI += ClosePopup;
+    }
+
+    private void OnDisable()
+    {
+        GameManager.Instance.OnSwitchUI -= ClosePopup;
     }
 }

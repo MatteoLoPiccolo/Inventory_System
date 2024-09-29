@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 
-public class PlayerInventoryUI : MonoBehaviour
+public class PlayerInventoryUI : MonoBehaviour //BaseInventoryUI<ShopItemUI>
 {
     [SerializeField] private PlayerInventory playerInventory;
     [SerializeField] private InventoryItemUI itemPrefab;

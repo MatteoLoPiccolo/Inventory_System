@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class GameManager : MonoBehaviour
@@ -6,12 +7,14 @@ public class GameManager : MonoBehaviour
     [SerializeField] private ShopSO shopData;
     [SerializeField] private UIController uiController;
     [SerializeField] private int listCount = 7;
-    [SerializeField] private int shopMoney = 7;
+    [SerializeField] private int shopMoney = 1000;
     
     private ShopController shopController;
     private InputManager inputManager;
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
+
+    public event Action OnSwitchUI;
 
     private void Awake()
     {
@@ -26,6 +29,8 @@ public class GameManager : MonoBehaviour
 
         shopController = new ShopController(shopUI, shopData, uiController, listCount, shopMoney);
         inputManager = new InputManager();
+
+        shopMoney = 1000;
     }
 
     private void Start()
@@ -41,7 +46,6 @@ public class GameManager : MonoBehaviour
         }
     }
 
-
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.I))
@@ -49,6 +53,12 @@ public class GameManager : MonoBehaviour
             Debug.Log("Inventory Toggle Pressed");
             inputManager.HandleInput();
         }
+    }
+
+    public void SwitchUI()
+    {
+        OnSwitchUI?.Invoke();
+        // Logica per attivare lo Shop o Inventory UI in base allo stato corrente
     }
 
     public ShopController GetShopController() { return shopController; }

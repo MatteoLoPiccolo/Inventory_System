@@ -1,17 +1,20 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public abstract class BaseInventoryUI<T> : MonoBehaviour  where T : MonoBehaviour
 {
+    [SerializeField] protected UiItemDescription itemDescription;
     [SerializeField] protected RectTransform contentRectTransform;
     [SerializeField] protected TMP_Text moneyText;
 
+    protected PurchasePopupUI activePopupInstance;
+
     protected List<T> uiItems = new List<T>();
 
-    public event Action<int> OnDescriptionRequested, OnItemActionRequested;
+    public event Action<int> OnDescriptionRequested;
+    public event Action<int> OnItemActionRequested;
 
     protected virtual void Awake() {}
 
@@ -20,6 +23,15 @@ public abstract class BaseInventoryUI<T> : MonoBehaviour  where T : MonoBehaviou
     protected abstract void OnLeftClick(T itemUI);
 
     protected abstract void OnRightClick(T itemUI);
+
+    public void ClosePopup()
+    {
+        if (activePopupInstance != null)
+        {
+            Destroy(activePopupInstance.gameObject);
+            activePopupInstance = null;
+        }
+    }
 
     protected void AddItemUI(T itemUI)
     {
@@ -34,14 +46,14 @@ public abstract class BaseInventoryUI<T> : MonoBehaviour  where T : MonoBehaviou
         uiItems.Clear();
     }
 
-    public virtual void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description, int price)
+    protected void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description, int price)
     {
         if (itemIndex < 0 || itemIndex >= uiItems.Count)
             return;
-        // Implementa la logica per aggiornare la descrizione
+
+        itemDescription.SetDescription(itemImage, name, description, price);
     }
 
-    // Metodo per aggiornare il denaro
     public void UpdateMoneyText(int money)
     {
         if (moneyText)
