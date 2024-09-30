@@ -5,11 +5,15 @@ public class GameManager : MonoBehaviour
 {
     [SerializeField] private ShopUI shopUI;
     [SerializeField] private ShopSO shopData;
+    [SerializeField] private PlayerInventoryUI playerInventoryUI;
+    [SerializeField] private PlayerInventory playerInventory;
     [SerializeField] private UIController uiController;
     [SerializeField] private int listCount = 7;
     [SerializeField] private int shopMoney = 1000;
-    
+    [SerializeField] private int inventoryMoney = 100;
+
     private ShopController shopController;
+    private InventoryController inventoryController;
     private InputManager inputManager;
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
@@ -27,10 +31,12 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
 
-        shopController = new ShopController(shopUI, shopData, uiController, listCount, shopMoney);
+        shopController = new ShopController(shopUI, shopData, uiController, playerInventory, listCount, shopMoney);
+        inventoryController = new InventoryController(playerInventoryUI, playerInventory, shopData, inventoryMoney);
         inputManager = new InputManager();
 
         shopMoney = 1000;
+        inventoryMoney = 100;
     }
 
     private void Start()
@@ -50,18 +56,13 @@ public class GameManager : MonoBehaviour
     {
         if (Input.GetKeyUp(KeyCode.I))
         {
-            Debug.Log("Inventory Toggle Pressed");
             inputManager.HandleInput();
         }
     }
 
-    public void SwitchUI()
-    {
-        OnSwitchUI?.Invoke();
-        // Logica per attivare lo Shop o Inventory UI in base allo stato corrente
-    }
-
     public ShopController GetShopController() { return shopController; }
 
-    public InputManager GetInputManager() { return inputManager; }
+    public PlayerInventory GetPlayerInventory () { return playerInventory; }
+
+    internal InventoryController GetInventoryController() { return inventoryController; }
 }

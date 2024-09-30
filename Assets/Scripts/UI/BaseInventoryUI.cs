@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public abstract class BaseInventoryUI<T> : MonoBehaviour  where T : MonoBehaviour
+public abstract class BaseInventoryUI<T> : MonoBehaviour where T : MonoBehaviour
 {
     [SerializeField] protected UiItemDescription itemDescription;
     [SerializeField] protected RectTransform contentRectTransform;
@@ -16,7 +16,7 @@ public abstract class BaseInventoryUI<T> : MonoBehaviour  where T : MonoBehaviou
     public event Action<int> OnDescriptionRequested;
     public event Action<int> OnItemActionRequested;
 
-    protected virtual void Awake() {}
+    protected virtual void Awake() { }
 
     protected abstract void InitializeUIList(int listSize);
 
@@ -31,12 +31,6 @@ public abstract class BaseInventoryUI<T> : MonoBehaviour  where T : MonoBehaviou
             Destroy(activePopupInstance.gameObject);
             activePopupInstance = null;
         }
-    }
-
-    protected void AddItemUI(T itemUI)
-    {
-        itemUI.transform.SetParent(contentRectTransform);
-        uiItems.Add(itemUI);
     }
 
     public virtual void Clear()
@@ -54,19 +48,9 @@ public abstract class BaseInventoryUI<T> : MonoBehaviour  where T : MonoBehaviou
         itemDescription.SetDescription(itemImage, name, description, price);
     }
 
-    public void UpdateMoneyText(int money)
-    {
-        if (moneyText)
-            moneyText.text = $"Money: {money}";
-    }
 
     protected void InvokeDescriptionRequested(int index)
     {
         OnDescriptionRequested?.Invoke(index);
-    }
-
-    protected void InvokeItemActionRequested(int index)
-    {
-        OnItemActionRequested?.Invoke(index);
     }
 }

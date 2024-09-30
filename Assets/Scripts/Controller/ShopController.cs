@@ -1,10 +1,12 @@
 using System;
+using UnityEngine;
 
 public class ShopController
 {
     private ShopUI shopUI;
     private ShopSO shopData;
-    private UIController uiManager;
+    private UIController uiController;
+    private PlayerInventory playerInventory;
 
     private int shopItemsListSize = 7;
     private int shopMoney = 1000;
@@ -22,11 +24,12 @@ public class ShopController
         }
     }
 
-    public ShopController(ShopUI shopUI, ShopSO shopData, UIController uiManager, int shopItemsListSize = 7, int initialMoney = 1000)
+    public ShopController(ShopUI shopUI, ShopSO shopData, UIController uiManager, PlayerInventory playerInventory, int shopItemsListSize = 7, int initialMoney = 1000)
     {
         this.shopUI = shopUI;
         this.shopData = shopData;
-        this.uiManager = uiManager;
+        this.uiController = uiManager;
+        this.playerInventory = playerInventory;
         this.shopItemsListSize = shopItemsListSize;
         this.shopMoney = initialMoney;
 
@@ -37,6 +40,9 @@ public class ShopController
     {
         shopData.Initialize(shopItemsListSize);
         SetUpUI();
+
+        shopUI.OnPurchasePopup.OnPurchaseConfirmed += OnPurchaseConfirmed;
+        Debug.Log("OnPurchaseConfirmed event subscribed.");
     }
 
     private void SetUpUI()
@@ -60,6 +66,40 @@ public class ShopController
         ItemSO item = shopItem.Item;
         shopUI.UpdateDescription(itemIndex, item.ItemImage, item.ItemName, item.Description, item.Price);
     }
+
+    public void OnPurchaseConfirmed(int itemIndex)
+    {
+        Debug.Log("OnConfirmPurchase called");
+
+        Items shopItem = shopData.GetItemAt(itemIndex);
+        Debug.Log($"Shop item retrieved: {shopItem.Item.ItemName}");
+
+        if (shopItem.IsEmpty)
+        {
+            Debug.Log("Shop item is empty, cannot proceed with purchase.");
+            return;
+        }
+
+        if (playerInventory.CanAfford(shopItem.Item.Price))
+        {
+            Debug.Log($"Player can afford {shopItem.Item.ItemName}. Price: {shopItem.Item.Price}");
+
+            GameManager.Instance.GetInventoryController().AddItemToInventory(shopItem.Item);
+
+            int newPlayerMoney = playerInventory.GetMoney() - shopItem.Item.Price;
+            int newShopMoney = GameManager.Instance.GetShopController().ShopMoney + shopItem.Item.Price;
+
+            playerInventory.SetMoney(newPlayerMoney);
+            GameManager.Instance.GetShopController().SetMoney(newShopMoney);
+
+            shopUI.UpdateData(itemIndex, shopItem.Item.ItemImage, shopItem.Quantity - 1);
+        }
+        else
+        {
+            Debug.Log("Not enough money!");
+        }
+    }
+
     public void SetMoney(int amount)
     {
         if (ShopMoney >= amount)
@@ -67,8 +107,6 @@ public class ShopController
             ShopMoney -= amount;
         }
     }
-
-    public int GetShopItemsListSize() => shopItemsListSize;
 
     public ShopUI GetShopUI() => shopUI;
 }

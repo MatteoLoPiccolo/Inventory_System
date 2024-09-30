@@ -24,7 +24,6 @@ public class UIController : MonoBehaviour
         SetTextMoneyUI();
     }
 
-    // Show the shop and hide the inventory
     public void ShowShop()
     {
         SetCanvasGroupVisibility(shopCanvasGroup, true);
@@ -36,7 +35,6 @@ public class UIController : MonoBehaviour
         isShopOpen = true;
     }
 
-    // Show inventory and hide the shop
     public void ShowPlayerInventory()
     {
         SetCanvasGroupVisibility(shopCanvasGroup, false);
@@ -50,7 +48,6 @@ public class UIController : MonoBehaviour
         GameManager.Instance.GetShopController().GetShopUI().ClosePopup();
     }
 
-    // Use CanvasGroup to manage visibility and interaction
     private void SetCanvasGroupVisibility(CanvasGroup canvasGroup, bool isVisible)
     {
         canvasGroup.alpha = isVisible ? 1 : 0; // Check the transparency
@@ -58,11 +55,8 @@ public class UIController : MonoBehaviour
         canvasGroup.blocksRaycasts = isVisible; // Enable or disable raycast (for clic)
     }
 
-    // If the shop is visible, the inventory is invisible and viceversa
     public void ToggleShop()
     {
-        Debug.Log("ToggleShop called");
-
         if (isShopOpen)
             ShowPlayerInventory();
         else
@@ -72,7 +66,7 @@ public class UIController : MonoBehaviour
     public void SetTextMoneyUI()
     {
         if (playerMoneyText)
-            playerMoneyText.text = $"Player $: {playerInventory.InventoryMoney}";
+            playerMoneyText.text = $"Player $: {GameManager.Instance.GetPlayerInventory().InventoryMoney}";
         else
             Debug.LogError("playerMoneyText is null");
 

@@ -34,25 +34,7 @@ public class PlayerInventory : MonoBehaviour
         inventory.Clear();
         inventoryUI.Clear();
         UpdateUI();
-        //playerInventoryItems.Clear();
     }
-
-    //public void AddItem(ItemSO item, int quantity)
-    //{
-    //    if (inventory.ContainsKey(item))
-    //        inventory[item] += quantity;
-    //    else
-    //        inventory[item] = quantity;
-
-    //    Items existingItem = playerInventoryItems.Find(i => i.Item == item);
-
-    //    if (existingItem != null)
-    //        existingItem.ChangeQuantity(existingItem.Quantity + quantity);
-    //    else
-    //        playerInventoryItems.Add(new Items(item, quantity));
-
-    //    OnInventoryChanged?.Invoke();
-    //}
 
     public void AddItem(ItemSO item, int quantity)
     {
@@ -60,6 +42,8 @@ public class PlayerInventory : MonoBehaviour
             inventory[item] += quantity;
         else
             inventory[item] = quantity;
+
+        Debug.Log($"Adding {quantity} of {item.ItemName} to inventory.");
 
         OnInventoryChanged?.Invoke();
         UpdateUI();

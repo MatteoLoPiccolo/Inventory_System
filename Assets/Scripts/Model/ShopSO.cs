@@ -9,11 +9,9 @@ public class ShopSO : ScriptableObject
 
     public void Initialize(int size)
     {
-        // if the list has no element in inspector or is empty
         if (shopItems == null || shopItems.Count == 0)
             shopItems = new List<Items>(size);
 
-        // Add item only if there are some empty spaces
         for (int i = shopItems.Count; i < size; i++)
             shopItems.Add(Items.GetEmptyItem());
     }
@@ -35,14 +33,6 @@ public class ShopSO : ScriptableObject
             throw new IndexOutOfRangeException();
 
         return shopItems[itemIndex];
-    }
-
-    public void RemoveItemAt(int itemIndex)
-    {
-        if (itemIndex < 0 || itemIndex >= shopItems.Count)
-            throw new IndexOutOfRangeException();
-
-        shopItems[itemIndex] = Items.GetEmptyItem();
     }
 }
 

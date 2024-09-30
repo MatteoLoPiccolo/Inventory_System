@@ -353,9 +353,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shopUI: {fileID: 5422085954351143117}
   shopData: {fileID: 11400000, guid: 3eed4c39e2e006b43b6fc9e21ed509bc, type: 2}
+  playerInventoryUI: {fileID: 2297106691557144778}
+  playerInventory: {fileID: 0}
   uiController: {fileID: 8797912017164440862}
   listCount: 7
   shopMoney: 7
+  inventoryMoney: 100
 --- !u!4 &644656451
 Transform:
   m_ObjectHideFlags: 0
@@ -1404,11 +1407,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cffdc414e32c95743bc3806e632fdfdf, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInventory: {fileID: 9189724912487397906}
-  itemPrefab: {fileID: 5980174525863406311, guid: 0cc99527c3ba2a24fa847b79667491f9, type: 3}
+  itemDescription: {fileID: 6116389963535591743}
   contentRectTransform: {fileID: 779429426050076389}
   moneyText: {fileID: 1331852553512170341}
-  uIController: {fileID: 0}
+  playerInventory: {fileID: 9189724912487397906}
+  purchasePopupPrefab: {fileID: 0}
+  itemPrefab: {fileID: 5980174525863406311, guid: 0cc99527c3ba2a24fa847b79667491f9, type: 3}
 --- !u!222 &2301864234400417444
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -2534,13 +2538,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7668353a0a6f605468a8c08ef6b8a3c5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  itemPrefab: {fileID: 6270129883596610472, guid: 2002ca95bd12354479341cb3a82e8f9a, type: 3}
-  contentRectTransform: {fileID: 8667373963969531914}
   itemDescription: {fileID: 8559474452771786229}
-  purchasePopupPrefab: {fileID: 8085747027935952512, guid: 437fd398720e3344798f5c3a342feeb2, type: 3}
+  contentRectTransform: {fileID: 8667373963969531914}
+  moneyText: {fileID: 1340731608880483540}
+  itemPrefab: {fileID: 6270129883596610472, guid: 2002ca95bd12354479341cb3a82e8f9a, type: 3}
+  purchasePopupUIPrefab: {fileID: 0}
   playerInventory: {fileID: 9189724912487397906}
   shopItemSO: {fileID: 11400000, guid: 3eed4c39e2e006b43b6fc9e21ed509bc, type: 2}
-  moneyText: {fileID: 1340731608880483540}
 --- !u!224 &5432969647863154144
 RectTransform:
   m_ObjectHideFlags: 0
@@ -4548,8 +4552,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dde89c74d29a60046b90c16e3905271f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerInventoryItems: []
   inventoryUI: {fileID: 2297106691557144778}
+  shopUI: {fileID: 5422085954351143117}
   inventoryMoney: 100
 --- !u!222 &9203651705330200785
 CanvasRenderer:

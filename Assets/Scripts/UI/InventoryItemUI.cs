@@ -1,33 +1,38 @@
+using System;
 using TMPro;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventoryItemUI : MonoBehaviour
+public class InventoryItemUI : MonoBehaviour, IPointerClickHandler
 {
     [SerializeField] private Image itemImage;
-    [SerializeField] private TMP_Text quantityText;
+    [SerializeField] private TMP_Text itemQuantityText;
+
+    public event Action<InventoryItemUI> OnItemClicked;
+    public event Action<InventoryItemUI> OnRightMouseButtonClicked;
 
     public Image ItemImage
     {
         get { return itemImage; }
     }
 
-    public void SetItem(ItemSO item, int quantity)
+    public void SetItem(Sprite spriteImage, int quantity)
     {
-        if (item == null)
-        {
-            Debug.LogError("ItemSO is null in SetItem");
-            return;
-        }
-
         if (itemImage != null)
-            itemImage.sprite = item.ItemImage;
-        else
-            Debug.LogError("Item image is not assigned in InventoryItemUI");
+        {
+            itemImage.gameObject.SetActive(true);
+            itemImage.sprite = spriteImage;
+        }
+        if (itemQuantityText != null)
+            itemQuantityText.text = quantity.ToString();
+    }
 
-        if (quantityText != null)
-            quantityText.text = quantity.ToString();
+    public void OnPointerClick(PointerEventData eventData)
+    {
+        if (eventData.button == PointerEventData.InputButton.Right)
+            OnRightMouseButtonClicked?.Invoke(this);
         else
-            Debug.LogError("Item quantity text is not assigned in InventoryItemUI");
+            OnItemClicked?.Invoke(this);
     }
 }
