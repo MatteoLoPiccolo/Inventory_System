@@ -46,8 +46,8 @@ public class ShopController
 
     private void SetUpUI()
     {
-        shopUI.InitializeShopUIList(shopItemsListSize);
-        shopUI.OnDescriptionRequested += OnDescriptionRequested;
+        shopUI.InitializeUIList(shopItemsListSize);
+        shopUI.OnDescriptionRequested += OnShopDescriptionRequested;
 
         foreach (var item in shopData.GetCurrentShopItemState())
         {
@@ -55,15 +55,17 @@ public class ShopController
         }
     }
 
-    private void OnDescriptionRequested(int itemIndex)
+    private void OnShopDescriptionRequested(int itemIndex)
     {
+        Debug.Log("OnShopDescriptionRequested(int itemIndex) called");
+
         Items shopItem = shopData.GetItemAt(itemIndex);
 
         if (shopItem.IsEmpty)
             return;
 
         ItemSO item = shopItem.Item;
-        shopUI.UpdateDescription(itemIndex, item.ItemImage, item.ItemName, item.Description, item.Price);
+        shopUI.UpdateShopItemDescription(itemIndex, item.ItemImage, item.ItemName, item.Description, item.Price);
     }
 
     public void OnPurchaseConfirmed(int itemIndex)

@@ -1,10 +1,13 @@
 using System;
+using System.Linq;
+using UnityEngine;
 
 public class InventoryController
 {
     private PlayerInventoryUI playerInventoryUI;
     private PlayerInventory playerInventory;
     private ShopSO shopData;
+    private ShopUI shopUI;
 
     private int inventoryItemsListSize;
     private int inventoryMoney = 100;
@@ -22,11 +25,12 @@ public class InventoryController
         }
     }
 
-    public InventoryController(PlayerInventoryUI playerInventoryUI, PlayerInventory playerInventory, ShopSO shopData, int initialMoney = 100)
+    public InventoryController(PlayerInventoryUI playerInventoryUI, PlayerInventory playerInventory, ShopSO shopData, ShopUI shopUI, int initialMoney = 100)
     {
         this.playerInventoryUI = playerInventoryUI;
         this.playerInventory = playerInventory;
         this.shopData = shopData;
+        this.shopUI = shopUI;
         this.inventoryMoney = initialMoney;
 
         InitializeInventoryController();
@@ -40,25 +44,56 @@ public class InventoryController
 
     private void SetUpUI()
     {
-        playerInventoryUI.InitializeList(inventoryItemsListSize);
-        playerInventoryUI.OnDescriptionRequested += OnDescriptionRequested;
+        //playerInventoryUI.InitializeList(inventoryItemsListSize);
+        playerInventoryUI.OnDescriptionRequested += OnInventoryDescriptionRequested;
 
-        foreach (var item in shopData.GetCurrentShopItemState())
+        Debug.Log("Subscribe to OnInventoryDescriptionRequested event");
+
+        var inventoryItems = playerInventory.GetInventoryItems().ToList();
+
+        for (int i = 0; i < inventoryItems.Count; i++)
         {
-            playerInventoryUI.UpdateData(item.Key, item.Value.Item.ItemImage, item.Value.Quantity);
+            var item = inventoryItems[i];
+            ItemSO itemSO = item.Key;
+            int quantity = item.Value;
+
+            playerInventoryUI.UpdateData(i, itemSO.ItemImage, quantity);
         }
     }
 
-    private void OnDescriptionRequested(int itemIndex)
+    private void OnInventoryDescriptionRequested(int itemIndex)
     {
-        Items shopItem = shopData.GetItemAt(itemIndex);
+        Debug.Log("OnInventoryDescriptionRequested(int itemIndex) called");
 
-        if (shopItem.IsEmpty)
+        var inventoryItems = playerInventory.GetInventoryItems().ToList();
+
+        if (itemIndex < 0 || itemIndex >= inventoryItems.Count)
+        {
+            Debug.LogWarning("Invalid item index.");
+            return;
+        }
+
+        var itemEntry = inventoryItems[itemIndex];
+        ItemSO itemSO = itemEntry.Key;
+        int quantity = itemEntry.Value;
+
+        if (itemSO == null)
             return;
 
-        ItemSO item = shopItem.Item;
-        playerInventoryUI.UpdateDescription(itemIndex, item.ItemImage, item.ItemName, item.Description, item.Price);
+        playerInventoryUI.UpdateInventoryItemDescription(itemIndex, itemSO.ItemImage, itemSO.ItemName, itemSO.Description, itemSO.Price);
     }
+
+
+    //private void OnDescriptionRequested(int itemIndex)
+    //{
+    //    Items shopItem = shopData.GetItemAt(itemIndex);
+
+    //    if (shopItem.IsEmpty)
+    //        return;
+
+    //    ItemSO item = shopItem.Item;
+    //    playerInventoryUI.UpdateInventoryItemDescription(itemIndex, item.ItemImage, item.ItemName, item.Description, item.Price);
+    //}
 
     public void SetMoney(int amount)
     {

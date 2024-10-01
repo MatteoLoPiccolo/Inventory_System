@@ -16,7 +16,7 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
         itemDescription.ResetDescription();
     }
 
-    protected override void InitializeUIList(int listSize)
+    public void InitializeUIList(int listSize)
     {
         for (int i = 0; i < listSize; i++)
         {
@@ -28,14 +28,12 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
         }
     }
 
-    public void InitializeShopUIList(int listSize)
+    public void UpdateShopItemDescription(int itemIndex, Sprite itemImage, string name, string description, int price)
     {
-        InitializeUIList(listSize);
-    }
+        if (itemIndex < 0 || itemIndex >= uiShopItems.Count)
+            return;
 
-    public new void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description, int price)
-    {
-        base.UpdateDescription(itemIndex, itemImage, name, description, price);
+        itemDescription.SetDescription(itemImage, name, description, price);
     }
 
     public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)

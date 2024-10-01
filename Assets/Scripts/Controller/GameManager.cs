@@ -39,7 +39,7 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
 
-        inventoryController = new InventoryController(playerInventoryUI, playerInventory, shopData, inventoryMoney);
+        inventoryController = new InventoryController(playerInventoryUI, playerInventory, shopData, shopUI, inventoryMoney);
         inputManager = new InputManager();
 
         shopMoney = 1000;

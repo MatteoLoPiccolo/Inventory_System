@@ -1,3 +1,4 @@
+using System.Linq;
 using UnityEngine;
 
 public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
@@ -6,10 +7,11 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
     [SerializeField] private PurchasePopupUI purchasePopupPrefab;
     [SerializeField] private InventoryItemUI itemPrefab;
 
+    [SerializeField] private ShopSO shopItemSO;
+
     private void Start()
     {
         playerInventory.OnInventoryChanged += UpdateInventoryUI;
-        InitializeUIList(playerInventory.GetPlayerItems().Count);
         UpdateInventoryUI();
     }
 
@@ -17,8 +19,10 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
     {
         Clear();
 
-        foreach (var item in playerInventory.GetPlayerItems())
-            AddItemUI(item.Item, item.Quantity);
+        foreach (var item in playerInventory.GetInventoryItems())
+        {
+            AddItemUI(item.Key, item.Value);
+        }
     }
 
     public void AddItemUI(ItemSO item, int quantity)
@@ -28,60 +32,60 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
         newItem.gameObject.SetActive(true);
         newItem.OnItemClicked += OnLeftClick;
         newItem.OnRightMouseButtonClicked += OnRightClick;
-        uiShopItems.Add(newItem);
+        uiInventoryItems.Add(newItem);
     }
 
     public override void Clear()
     {
+        foreach (var item in uiInventoryItems)
+        {
+            Destroy(item.gameObject);
+        }
+        
+        uiInventoryItems.Clear();
         base.Clear();
     }
 
-    protected override void InitializeUIList(int listSize)
+    public void UpdateInventoryItemDescription(int itemIndex, Sprite itemImage, string name, string description, int price)
     {
-        for (int i = 0; i < listSize; i++)
-        {
-            InventoryItemUI inventoryItemUI = Instantiate(itemPrefab, contentRectTransform);
-            inventoryItemUI.OnItemClicked += OnLeftClick;
-            inventoryItemUI.OnRightMouseButtonClicked += OnRightClick;
-            uiShopItems.Add(inventoryItemUI);
-        }
-    }
+        if (itemIndex < 0 || itemIndex >= uiInventoryItems.Count)
+            return;
 
-    public void InitializeList(int listSize)
-    {
-        InitializeUIList(listSize);
-    }
-
-    public new void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description, int price)
-    {
-        base.UpdateDescription(itemIndex, itemImage, name, description, price);
+        itemDescription.SetDescription(itemImage, name, description, price);
     }
 
     public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)
     {
-        if (itemIndex < uiShopItems.Count)
-            uiShopItems[itemIndex].SetItem(itemImage, itemQuantity);
+        if (itemIndex < uiInventoryItems.Count)
+            uiInventoryItems[itemIndex].SetItem(itemImage, itemQuantity);
     }
 
     protected override void OnLeftClick(InventoryItemUI itemUI)
     {
         Debug.Log("Left click detected in Inventory");
 
-        int index = uiShopItems.IndexOf(itemUI);
+        int index = uiInventoryItems.IndexOf(itemUI);
         if (index == -1)
             return;
 
+        var playerItems = playerInventory.GetInventoryItems();
+        var playerItem = playerItems.ElementAtOrDefault(index);
+
+        if (playerItem.Key == null || playerItem.Value <= 0)
+            return;
+
         InvokeDescriptionRequested(index);
+
+        if (ActivePopupUIInstance.gameObject.activeInHierarchy)
+            ActivePopupUIInstance.Show(playerItem.Key.ItemImage, playerItem.Key.ItemName, playerItem.Value, playerItem.Key.Price, index);
     }
 
     protected override void OnRightClick(InventoryItemUI itemUI)
     {
         Debug.Log("Right click detected in Inventory");
 
-        int index = uiShopItems.IndexOf(itemUI);
+        int index = uiInventoryItems.IndexOf(itemUI);
         if (index == -1)
             return;
-
-        InvokeDescriptionRequested(index);
     }
 }

@@ -41,8 +41,6 @@ public abstract class BaseInventoryUI<T> : MonoBehaviour where T : MonoBehaviour
         activePopupUIInstance.gameObject.SetActive(false);
     }
 
-    protected abstract void InitializeUIList(int listSize);
-
     protected abstract void OnLeftClick(T itemUI);
 
     protected abstract void OnRightClick(T itemUI);
@@ -60,19 +58,8 @@ public abstract class BaseInventoryUI<T> : MonoBehaviour where T : MonoBehaviour
         uiShopItems.Clear();
     }
 
-    protected void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description, int price)
-    {
-        if (itemIndex < 0 || itemIndex >= uiShopItems.Count)
-            return;
-
-        itemDescription.SetDescription(itemImage, name, description, price);
-    }
-
-
     protected void InvokeDescriptionRequested(int index)
     {
         OnDescriptionRequested?.Invoke(index);
     }
-
-
 }

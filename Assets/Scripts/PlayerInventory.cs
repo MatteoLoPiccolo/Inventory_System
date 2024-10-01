@@ -32,7 +32,7 @@ public class PlayerInventory : MonoBehaviour
     private void ResetInventory()
     {
         inventory.Clear();
-        //playerInventoryUI.Clear();
+        playerInventoryUI.Clear();
         UpdateUI();
     }
 
@@ -64,7 +64,7 @@ public class PlayerInventory : MonoBehaviour
 
     public void UpdateUI()
     {
-        //playerInventoryUI.Clear();
+        playerInventoryUI.Clear();
 
         foreach (var item in inventory)
             playerInventoryUI.AddItemUI(item.Key, item.Value);
@@ -75,17 +75,22 @@ public class PlayerInventory : MonoBehaviour
         return GetMoney() >= cost;
     }
 
-    public List<Items> GetPlayerItems()
+    public Dictionary<ItemSO, int> GetInventoryItems()
     {
-        List<Items> itemsList = new List<Items>();
-
-        foreach (var kvp in inventory)
-        {
-            itemsList.Add(new Items(kvp.Key, kvp.Value));
-        }
-
-        return itemsList;
+        return inventory;
     }
+
+    //public List<Items> GetPlayerItems()
+    //{
+    //    List<Items> itemsList = new List<Items>();
+
+    //    foreach (var kvp in inventory)
+    //    {
+    //        itemsList.Add(new Items(kvp.Key, kvp.Value));
+    //    }
+
+    //    return itemsList;
+    //}
 
     public int GetMoney()
     {
