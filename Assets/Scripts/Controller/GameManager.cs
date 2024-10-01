@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerInventoryUI playerInventoryUI;
     [SerializeField] private PlayerInventory playerInventory;
     [SerializeField] private UIController uiController;
+
     [SerializeField] private int listCount = 7;
     [SerializeField] private int shopMoney = 1000;
     [SerializeField] private int inventoryMoney = 100;
@@ -15,6 +16,7 @@ public class GameManager : MonoBehaviour
     private ShopController shopController;
     private InventoryController inventoryController;
     private InputManager inputManager;
+
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
 
@@ -31,7 +33,6 @@ public class GameManager : MonoBehaviour
             instance = this;
         }
 
-        shopController = new ShopController(shopUI, shopData, uiController, playerInventory, listCount, shopMoney);
         inventoryController = new InventoryController(playerInventoryUI, playerInventory, shopData, inventoryMoney);
         inputManager = new InputManager();
 
@@ -50,6 +51,8 @@ public class GameManager : MonoBehaviour
         {
             inputManager.OnInventoryTogglePressed += uiController.ToggleShop;
         }
+
+        shopController = new ShopController(shopUI, shopData, uiController, playerInventory, listCount, shopMoney);
     }
 
     private void Update()
@@ -62,7 +65,7 @@ public class GameManager : MonoBehaviour
 
     public ShopController GetShopController() { return shopController; }
 
-    public PlayerInventory GetPlayerInventory () { return playerInventory; }
+    public PlayerInventory GetPlayerInventory() { return playerInventory; }
 
     internal InventoryController GetInventoryController() { return inventoryController; }
 }

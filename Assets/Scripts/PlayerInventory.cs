@@ -7,7 +7,7 @@ public class PlayerInventory : MonoBehaviour
     [SerializeField] private PlayerInventoryUI inventoryUI;
     [SerializeField] private ShopUI shopUI;
     [SerializeField] private int inventoryMoney;
-    
+
     private Dictionary<ItemSO, int> inventory = new Dictionary<ItemSO, int>();
 
     public event Action<int> OnMoneyChanged;

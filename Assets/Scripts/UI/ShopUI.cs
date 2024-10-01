@@ -4,7 +4,6 @@ using UnityEngine;
 public class ShopUI : BaseInventoryUI<ShopItemUI>
 {
     [SerializeField] private ShopItemUI itemPrefab;
-    [SerializeField] private PurchasePopupUI purchasePopupUIPrefab;
     [SerializeField] private PlayerInventory playerInventory;
     [SerializeField] private ShopSO shopItemSO;
 
@@ -15,10 +14,7 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
     {
         base.Awake();
         itemDescription.ResetDescription();
-        purchasePopupUIPrefab.gameObject.SetActive(false);
     }
-
-    public PurchasePopupUI OnPurchasePopup => purchasePopupUIPrefab;
 
     protected override void InitializeUIList(int listSize)
     {
@@ -60,36 +56,41 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
 
         InvokeDescriptionRequested(index);
 
-        if (activePopupInstance)
-            activePopupInstance.Show(shopItem.Item.ItemImage, shopItem.Item.ItemName, shopItem.Quantity, shopItem.Item.Price, index);
+        if (ActivePopupUIInstance.gameObject.activeInHierarchy)
+            ActivePopupUIInstance.Show(shopItem.Item.ItemImage, shopItem.Item.ItemName, shopItem.Quantity, shopItem.Item.Price, index);
     }
 
     protected override void OnRightClick(ShopItemUI itemUI)
     {
-        if (activePopupInstance)
+        PurchasePopupUI popup = ActivePopupUIInstance;
+
+        if (popup.gameObject.activeInHierarchy)
         {
             int index = uiItems.IndexOf(itemUI);
             if (index == -1) return;
 
             Items shopItem = shopItemSO.GetItemAt(index);
-            if (shopItem == null || shopItem.Item == null) return;
+            if (shopItem == null || shopItem.Item == null)
+                return;
 
-            activePopupInstance.Show(shopItem.Item.ItemImage, shopItem.Item.ItemName, shopItem.Quantity, shopItem.Item.Price, index);
+            popup.Show(shopItem.Item.ItemImage, shopItem.Item.ItemName, shopItem.Quantity, shopItem.Item.Price, index);
             return;
         }
 
         int newIndex = uiItems.IndexOf(itemUI);
-        if (newIndex == -1) return;
-
-        activePopupInstance = Instantiate(purchasePopupUIPrefab, contentRectTransform);
-
-        Items newItem = shopItemSO.GetItemAt(newIndex);
-        if (newItem == null || newItem.Item == null) 
+        if (newIndex == -1) 
             return;
 
-        activePopupInstance.Show(newItem.Item.ItemImage, newItem.Item.ItemName, newItem.Quantity, newItem.Item.Price, newIndex);
+        popup.gameObject.SetActive(true);
+        Debug.Log(popup.gameObject.activeInHierarchy);
 
-        activePopupInstance.OnPurchaseConfirmed += GameManager.Instance.GetShopController().OnPurchaseConfirmed;
+        Items newItem = shopItemSO.GetItemAt(newIndex);
+        if (newItem == null || newItem.Item == null)
+            return;
+
+        popup.Show(newItem.Item.ItemImage, newItem.Item.ItemName, newItem.Quantity, newItem.Item.Price, newIndex);
+
+        popup.OnPurchaseConfirmed += GameManager.Instance.GetShopController().OnPurchaseConfirmed;
     }
 
     public override void Clear()

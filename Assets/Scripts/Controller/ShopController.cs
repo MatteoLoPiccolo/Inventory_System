@@ -41,7 +41,6 @@ public class ShopController
         shopData.Initialize(shopItemsListSize);
         SetUpUI();
 
-        shopUI.OnPurchasePopup.OnPurchaseConfirmed += OnPurchaseConfirmed;
         Debug.Log("OnPurchaseConfirmed event subscribed.");
     }
 

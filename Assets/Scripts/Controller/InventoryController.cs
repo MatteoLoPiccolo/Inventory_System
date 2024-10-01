@@ -70,7 +70,7 @@ public class InventoryController
 
     public void AddItemToInventory(ItemSO item)
     {
-        playerInventoryUI.AddItemUI(item, 1);  
+        playerInventoryUI.AddItemUI(item, 1);
         playerInventory.AddItem(item, 1);
     }
 

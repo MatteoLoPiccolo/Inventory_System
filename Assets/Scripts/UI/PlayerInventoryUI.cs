@@ -68,7 +68,7 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
         Debug.Log("Left click detected in Inventory");
 
         int index = uiItems.IndexOf(itemUI);
-        if (index == -1) 
+        if (index == -1)
             return;
 
         InvokeDescriptionRequested(index);
@@ -79,7 +79,7 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
         Debug.Log("Right click detected in Inventory");
 
         int index = uiItems.IndexOf(itemUI);
-        if (index == -1) 
+        if (index == -1)
             return;
 
         InvokeDescriptionRequested(index);

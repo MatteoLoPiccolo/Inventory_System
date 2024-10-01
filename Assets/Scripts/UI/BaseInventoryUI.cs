@@ -5,18 +5,40 @@ using UnityEngine;
 
 public abstract class BaseInventoryUI<T> : MonoBehaviour where T : MonoBehaviour
 {
+    [SerializeField] protected PurchasePopupUI activePopupUIInstance;
     [SerializeField] protected UiItemDescription itemDescription;
     [SerializeField] protected RectTransform contentRectTransform;
     [SerializeField] protected TMP_Text moneyText;
-
-    protected PurchasePopupUI activePopupInstance;
 
     protected List<T> uiItems = new List<T>();
 
     public event Action<int> OnDescriptionRequested;
     public event Action<int> OnItemActionRequested;
 
-    protected virtual void Awake() { }
+    public PurchasePopupUI ActivePopupUIInstance
+    {
+        get
+        {
+            if (activePopupUIInstance == null)
+            {
+                activePopupUIInstance = Instantiate(activePopupUIInstance, transform);
+                activePopupUIInstance.gameObject.SetActive(false);
+            }
+
+            return activePopupUIInstance;
+        }
+    }
+
+    protected virtual void Awake()
+    {
+        if (activePopupUIInstance == null)
+        {
+            Debug.LogError("PurchasePopupInstance is null!");
+            return;
+        }
+
+        activePopupUIInstance.gameObject.SetActive(false);
+    }
 
     protected abstract void InitializeUIList(int listSize);
 
@@ -26,11 +48,8 @@ public abstract class BaseInventoryUI<T> : MonoBehaviour where T : MonoBehaviour
 
     public void ClosePopup()
     {
-        if (activePopupInstance != null)
-        {
-            Destroy(activePopupInstance.gameObject);
-            activePopupInstance = null;
-        }
+        ActivePopupUIInstance.gameObject.SetActive(false);
+        activePopupUIInstance.OnPurchaseConfirmed -= GameManager.Instance.GetShopController().OnPurchaseConfirmed;
     }
 
     public virtual void Clear()
@@ -53,4 +72,6 @@ public abstract class BaseInventoryUI<T> : MonoBehaviour where T : MonoBehaviour
     {
         OnDescriptionRequested?.Invoke(index);
     }
+
+
 }
