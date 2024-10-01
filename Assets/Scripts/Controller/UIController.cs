@@ -18,7 +18,7 @@ public class UIController : MonoBehaviour
     private void Start()
     {
         playerInventory.OnMoneyChanged += UpdatePlayerMoneyUI;
-        GameManager.Instance.GetShopController().OnMoneyChanged += UpdateShopMoneyUI;
+        GameManager.Instance.ShopController.OnMoneyChanged += UpdateShopMoneyUI;
 
         ShowPlayerInventory();
         SetTextMoneyUI();
@@ -45,7 +45,7 @@ public class UIController : MonoBehaviour
 
         isShopOpen = false;
 
-        GameManager.Instance.GetShopController().GetShopUI().ClosePopup();
+        GameManager.Instance.ShopController.GetShopUI().ClosePopup();
     }
 
     private void SetCanvasGroupVisibility(CanvasGroup canvasGroup, bool isVisible)
@@ -66,12 +66,12 @@ public class UIController : MonoBehaviour
     public void SetTextMoneyUI()
     {
         if (playerMoneyText)
-            playerMoneyText.text = $"Player $: {GameManager.Instance.GetPlayerInventory().InventoryMoney}";
+            playerMoneyText.text = $"Player $: {GameManager.Instance.PlayerInventory.InventoryMoney}";
         else
             Debug.LogError("playerMoneyText is null");
 
         if (shopMoneyText)
-            shopMoneyText.text = $"Shop $ : {GameManager.Instance.GetShopController().ShopMoney}";
+            shopMoneyText.text = $"Shop $ : {GameManager.Instance.ShopController.ShopMoney}";
         else
             Debug.LogError("shopMoneyText is null");
     }

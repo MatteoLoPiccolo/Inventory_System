@@ -83,13 +83,13 @@ public class ShopController
         {
             Debug.Log($"Player can afford {shopItem.Item.ItemName}. Price: {shopItem.Item.Price}");
 
-            GameManager.Instance.GetInventoryController().AddItemToInventory(shopItem.Item);
+            GameManager.Instance.InventoryController.AddItemToInventory(shopItem.Item);
 
             int newPlayerMoney = playerInventory.GetMoney() - shopItem.Item.Price;
-            int newShopMoney = GameManager.Instance.GetShopController().ShopMoney + shopItem.Item.Price;
+            int newShopMoney = GameManager.Instance.ShopController.ShopMoney + shopItem.Item.Price;
 
             playerInventory.SetMoney(newPlayerMoney);
-            GameManager.Instance.GetShopController().SetMoney(newShopMoney);
+            GameManager.Instance.ShopController.SetMoney(newShopMoney);
 
             shopUI.UpdateData(itemIndex, shopItem.Item.ItemImage, shopItem.Quantity - 1);
         }

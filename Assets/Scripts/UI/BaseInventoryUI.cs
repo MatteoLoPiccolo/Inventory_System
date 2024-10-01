@@ -10,7 +10,8 @@ public abstract class BaseInventoryUI<T> : MonoBehaviour where T : MonoBehaviour
     [SerializeField] protected RectTransform contentRectTransform;
     [SerializeField] protected TMP_Text moneyText;
 
-    protected List<T> uiItems = new List<T>();
+    protected List<T> uiShopItems = new List<T>();
+    protected List<T> uiInventoryItems = new List<T>();
 
     public event Action<int> OnDescriptionRequested;
     public event Action<int> OnItemActionRequested;
@@ -49,19 +50,19 @@ public abstract class BaseInventoryUI<T> : MonoBehaviour where T : MonoBehaviour
     public void ClosePopup()
     {
         ActivePopupUIInstance.gameObject.SetActive(false);
-        activePopupUIInstance.OnPurchaseConfirmed -= GameManager.Instance.GetShopController().OnPurchaseConfirmed;
+        activePopupUIInstance.OnPurchaseConfirmed -= GameManager.Instance.ShopController.OnPurchaseConfirmed;
     }
 
     public virtual void Clear()
     {
         foreach (Transform child in contentRectTransform)
             Destroy(child.gameObject);
-        uiItems.Clear();
+        uiShopItems.Clear();
     }
 
     protected void UpdateDescription(int itemIndex, Sprite itemImage, string name, string description, int price)
     {
-        if (itemIndex < 0 || itemIndex >= uiItems.Count)
+        if (itemIndex < 0 || itemIndex >= uiShopItems.Count)
             return;
 
         itemDescription.SetDescription(itemImage, name, description, price);

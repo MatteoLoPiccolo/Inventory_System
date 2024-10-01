@@ -21,7 +21,7 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
         for (int i = 0; i < listSize; i++)
         {
             ShopItemUI uiShopItem = Instantiate(itemPrefab, contentRectTransform);
-            uiItems.Add(uiShopItem);
+            uiShopItems.Add(uiShopItem);
 
             uiShopItem.OnItemClicked += OnLeftClick;
             uiShopItem.OnRightMouseButtonClicked += OnRightClick;
@@ -40,13 +40,13 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
 
     public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)
     {
-        if (itemIndex < uiItems.Count)
-            uiItems[itemIndex].SetItem(itemImage, itemQuantity);
+        if (itemIndex < uiShopItems.Count)
+            uiShopItems[itemIndex].SetItem(itemImage, itemQuantity);
     }
 
     protected override void OnLeftClick(ShopItemUI itemUI)
     {
-        int index = uiItems.IndexOf(itemUI);
+        int index = uiShopItems.IndexOf(itemUI);
         if (index == -1)
             return;
 
@@ -66,7 +66,7 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
 
         if (popup.gameObject.activeInHierarchy)
         {
-            int index = uiItems.IndexOf(itemUI);
+            int index = uiShopItems.IndexOf(itemUI);
             if (index == -1) return;
 
             Items shopItem = shopItemSO.GetItemAt(index);
@@ -77,7 +77,7 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
             return;
         }
 
-        int newIndex = uiItems.IndexOf(itemUI);
+        int newIndex = uiShopItems.IndexOf(itemUI);
         if (newIndex == -1) 
             return;
 
@@ -90,7 +90,7 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
 
         popup.Show(newItem.Item.ItemImage, newItem.Item.ItemName, newItem.Quantity, newItem.Item.Price, newIndex);
 
-        popup.OnPurchaseConfirmed += GameManager.Instance.GetShopController().OnPurchaseConfirmed;
+        popup.OnPurchaseConfirmed += GameManager.Instance.ShopController.OnPurchaseConfirmed;
     }
 
     public override void Clear()

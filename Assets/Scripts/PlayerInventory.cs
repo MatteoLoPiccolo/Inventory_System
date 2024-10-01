@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    [SerializeField] private PlayerInventoryUI inventoryUI;
+    [SerializeField] private PlayerInventoryUI playerInventoryUI;
     [SerializeField] private ShopUI shopUI;
     [SerializeField] private int inventoryMoney;
 
@@ -32,7 +32,7 @@ public class PlayerInventory : MonoBehaviour
     private void ResetInventory()
     {
         inventory.Clear();
-        inventoryUI.Clear();
+        //playerInventoryUI.Clear();
         UpdateUI();
     }
 
@@ -64,10 +64,10 @@ public class PlayerInventory : MonoBehaviour
 
     public void UpdateUI()
     {
-        inventoryUI.Clear();
+        //playerInventoryUI.Clear();
 
         foreach (var item in inventory)
-            inventoryUI.AddItemUI(item.Key, item.Value);
+            playerInventoryUI.AddItemUI(item.Key, item.Value);
     }
 
     public bool CanAfford(int cost)

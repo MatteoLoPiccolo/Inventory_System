@@ -20,6 +20,12 @@ public class GameManager : MonoBehaviour
     private static GameManager instance;
     public static GameManager Instance { get { return instance; } }
 
+    public ShopController ShopController { get { return shopController; } }
+
+    public PlayerInventory PlayerInventory { get { return playerInventory; } }
+
+    internal InventoryController InventoryController { get { return inventoryController; } }
+
     public event Action OnSwitchUI;
 
     private void Awake()
@@ -63,9 +69,5 @@ public class GameManager : MonoBehaviour
         }
     }
 
-    public ShopController GetShopController() { return shopController; }
-
-    public PlayerInventory GetPlayerInventory() { return playerInventory; }
-
-    internal InventoryController GetInventoryController() { return inventoryController; }
+    
 }

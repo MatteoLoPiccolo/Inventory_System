@@ -28,7 +28,7 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
         newItem.gameObject.SetActive(true);
         newItem.OnItemClicked += OnLeftClick;
         newItem.OnRightMouseButtonClicked += OnRightClick;
-        uiItems.Add(newItem);
+        uiShopItems.Add(newItem);
     }
 
     public override void Clear()
@@ -43,7 +43,7 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
             InventoryItemUI inventoryItemUI = Instantiate(itemPrefab, contentRectTransform);
             inventoryItemUI.OnItemClicked += OnLeftClick;
             inventoryItemUI.OnRightMouseButtonClicked += OnRightClick;
-            uiItems.Add(inventoryItemUI);
+            uiShopItems.Add(inventoryItemUI);
         }
     }
 
@@ -59,15 +59,15 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
 
     public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)
     {
-        if (itemIndex < uiItems.Count)
-            uiItems[itemIndex].SetItem(itemImage, itemQuantity);
+        if (itemIndex < uiShopItems.Count)
+            uiShopItems[itemIndex].SetItem(itemImage, itemQuantity);
     }
 
     protected override void OnLeftClick(InventoryItemUI itemUI)
     {
         Debug.Log("Left click detected in Inventory");
 
-        int index = uiItems.IndexOf(itemUI);
+        int index = uiShopItems.IndexOf(itemUI);
         if (index == -1)
             return;
 
@@ -78,7 +78,7 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
     {
         Debug.Log("Right click detected in Inventory");
 
-        int index = uiItems.IndexOf(itemUI);
+        int index = uiShopItems.IndexOf(itemUI);
         if (index == -1)
             return;
 
