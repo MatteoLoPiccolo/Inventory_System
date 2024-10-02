@@ -87,7 +87,7 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
             return;
 
         popup.Show(newItem.Item.ItemImage, newItem.Item.ItemName, newItem.Quantity, newItem.Item.Price, newIndex);
-
+                
         popup.OnPurchaseConfirmed += GameManager.Instance.ShopController.OnPurchaseConfirmed;
     }
 

@@ -447,6 +447,10 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 7152010905184677213, guid: 437fd398720e3344798f5c3a342feeb2, type: 3}
+      propertyPath: m_text
+      value: Health Potion
+      objectReference: {fileID: 0}
     - target: {fileID: 7551687000477815143, guid: 437fd398720e3344798f5c3a342feeb2, type: 3}
       propertyPath: m_Name
       value: Popup_Purchase_UI

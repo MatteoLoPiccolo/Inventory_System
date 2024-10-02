@@ -41,14 +41,12 @@ public class PurchasePopupUI : MonoBehaviour
     {
         buyButton.onClick.AddListener(OnConfirmPurchase);
         backButton.onClick.AddListener(ClosePopup);
-        Debug.Log("Listeners added for PurchasePopupUI.");
     }
 
     private void OnDisable()
     {
         buyButton.onClick.RemoveListener(OnConfirmPurchase);
         backButton.onClick.RemoveListener(ClosePopup);
-        Debug.Log("Listeners removed for PurchasePopupUI.");
     }
 
     public void ClosePopup()

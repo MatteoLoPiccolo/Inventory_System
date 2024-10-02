@@ -11,7 +11,7 @@ public class PlayerInventory : MonoBehaviour
     private Dictionary<ItemSO, int> inventory = new Dictionary<ItemSO, int>();
 
     public event Action<int> OnMoneyChanged;
-    public event Action OnInventoryChanged;
+    public event Action<ItemSO, int> OnInventoryItemAdded;
 
     public int InventoryMoney
     {
@@ -39,15 +39,19 @@ public class PlayerInventory : MonoBehaviour
     public void AddItem(ItemSO item, int quantity)
     {
         if (inventory.ContainsKey(item))
+        {
             inventory[item] += quantity;
+            Debug.Log($"Increased {item.ItemName} quantity by {quantity}. New quantity: {inventory[item]}.");
+        }
         else
+        {
             inventory[item] = quantity;
+            Debug.Log($"Adding {quantity} of {item.ItemName} to inventory.");
+        }
 
-        Debug.Log($"Adding {quantity} of {item.ItemName} to inventory.");
-
-        OnInventoryChanged?.Invoke();
-        UpdateUI();
+        OnInventoryItemAdded?.Invoke(item, inventory[item]);
     }
+
 
     public void RemoveItem(ItemSO item, int quantity)
     {
@@ -57,7 +61,7 @@ public class PlayerInventory : MonoBehaviour
             if (inventory[item] <= 0)
                 inventory.Remove(item);
 
-            OnInventoryChanged?.Invoke();
+            OnInventoryItemAdded?.Invoke(item, inventory[item]);
             UpdateUI();
         }
     }

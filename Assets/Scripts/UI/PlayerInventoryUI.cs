@@ -1,3 +1,4 @@
+using System;
 using System.Linq;
 using UnityEngine;
 
@@ -11,14 +12,12 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
 
     private void Start()
     {
-        playerInventory.OnInventoryChanged += UpdateInventoryUI;
+        playerInventory.OnInventoryItemAdded += AddItemUI;
         UpdateInventoryUI();
     }
 
     private void UpdateInventoryUI()
     {
-        //Clear();
-
         foreach (var item in playerInventory.GetInventoryItems())
         {
             AddItemUI(item.Key, item.Value);
@@ -27,13 +26,36 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
 
     public void AddItemUI(ItemSO item, int quantity)
     {
+        InventoryItemUI existingItemUI = null;
 
-        InventoryItemUI newItem = Instantiate(itemPrefab, contentRectTransform);
-        newItem.SetItem(item.ItemImage, quantity);
-        newItem.gameObject.SetActive(true);
-        newItem.OnItemClicked += OnLeftClick;
-        newItem.OnRightMouseButtonClicked += OnRightClick;
-        uiInventoryItems.Add(newItem);
+        foreach (var uiItem in uiInventoryItems)
+        {
+            if (uiItem.Item == item)
+            {
+                existingItemUI = uiItem;
+                break;
+            }
+        }
+
+        if (existingItemUI != null)
+        {
+            existingItemUI.UpdateQuantity();
+        }
+        else
+        {
+            InventoryItemUI newItem = Instantiate(itemPrefab, contentRectTransform);
+            newItem.SetItem(item, quantity);
+            newItem.gameObject.SetActive(true);
+            newItem.OnItemClicked += OnLeftClick;
+            newItem.OnRightMouseButtonClicked += OnRightClick;
+            uiInventoryItems.Add(newItem);
+        }
+    }
+
+    private void UnsubscribeFromOnInventoryItemAdded()
+    {
+        Debug.Log("UnsubscribeFromOnInventoryItemAdded is called");
+        playerInventory.OnInventoryItemAdded -= AddItemUI; ;
     }
 
     public override void Clear()
@@ -55,10 +77,10 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
         itemDescription.SetDescription(itemImage, name, description, price);
     }
 
-    public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)
+    public void UpdateData(int itemIndex, ItemSO item, int itemQuantity)
     {
         if (itemIndex < uiInventoryItems.Count)
-            uiInventoryItems[itemIndex].SetItem(itemImage, itemQuantity);
+            uiInventoryItems[itemIndex].SetItem(item, itemQuantity);
     }
 
     protected override void OnLeftClick(InventoryItemUI itemUI)

@@ -48,7 +48,6 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        Debug.Log("GameManager Start");
         if (uiController == null)
         {
             Debug.LogError("UIController is null in GameManager!");
@@ -68,6 +67,4 @@ public class GameManager : MonoBehaviour
             inputManager.HandleInput();
         }
     }
-
-
 }

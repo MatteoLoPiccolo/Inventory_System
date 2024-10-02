@@ -46,8 +46,6 @@ public class InventoryController
     {
         playerInventoryUI.OnDescriptionRequested += OnInventoryDescriptionRequested;
 
-        Debug.Log("Subscribe to OnInventoryDescriptionRequested event");
-
         var inventoryItems = playerInventory.GetInventoryItems().ToList();
 
         for (int i = 0; i < inventoryItems.Count; i++)
@@ -56,7 +54,7 @@ public class InventoryController
             ItemSO itemSO = item.Key;
             int quantity = item.Value;
 
-            playerInventoryUI.UpdateData(i, itemSO.ItemImage, quantity);
+            playerInventoryUI.UpdateData(i, itemSO, quantity);
         }
     }
 
@@ -89,12 +87,6 @@ public class InventoryController
             ShopMoney -= amount;
         }
     }
-
-    public void AddItemToInventory(ItemSO item)
-    {
-        playerInventoryUI.AddItemUI(item, 1);
-        playerInventory.AddItem(item, 1);
-    }
-
+    
     public PlayerInventoryUI GetInventoryUI() => playerInventoryUI;
 }

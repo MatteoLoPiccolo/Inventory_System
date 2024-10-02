@@ -12,7 +12,7 @@ public class ShopController
     private int shopMoney = 1000;
 
     public event Action<int> OnMoneyChanged;
-    
+
 
     public int ShopMoney
     {
@@ -41,8 +41,6 @@ public class ShopController
     {
         shopData.Initialize(shopItemsListSize);
         SetUpUI();
-
-        Debug.Log("OnPurchaseConfirmed event subscribed.");
     }
 
     private void SetUpUI()
@@ -71,10 +69,7 @@ public class ShopController
 
     public void OnPurchaseConfirmed(int itemIndex)
     {
-        Debug.Log("OnConfirmPurchase called");
-
         Items shopItem = shopData.GetItemAt(itemIndex);
-        Debug.Log($"Shop item retrieved: {shopItem.Item.ItemName}");
 
         if (shopItem.IsEmpty)
         {
@@ -84,9 +79,10 @@ public class ShopController
 
         if (playerInventory.CanAfford(shopItem.Item.Price))
         {
-            Debug.Log($"Player can afford {shopItem.Item.ItemName}. Price: {shopItem.Item.Price}");
+            Debug.Log($"OnPurchaseConfirmed called for item: {shopItem.Item.ItemName}, Quantity: {shopItem.Quantity}");
 
-            GameManager.Instance.InventoryController.AddItemToInventory(shopItem.Item);
+            int buyQuantity = 1;
+            playerInventory.AddItem(shopItem.Item, buyQuantity);
 
             int newPlayerMoney = playerInventory.GetMoney() - shopItem.Item.Price;
             int newShopMoney = GameManager.Instance.ShopController.ShopMoney + shopItem.Item.Price;
