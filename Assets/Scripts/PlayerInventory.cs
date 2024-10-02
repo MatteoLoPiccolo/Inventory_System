@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class PlayerInventory : MonoBehaviour
 {
-    [SerializeField] private List<Items> playerInventoryItems;
-    [SerializeField] private PlayerInventoryUI inventoryUI;
+    [SerializeField] private PlayerInventoryUI playerInventoryUI;
+    [SerializeField] private ShopUI shopUI;
     [SerializeField] private int inventoryMoney;
 
     private Dictionary<ItemSO, int> inventory = new Dictionary<ItemSO, int>();
 
-    public event Action<int> OnMoneyChanged; 
+    public event Action<int> OnMoneyChanged;
     public event Action OnInventoryChanged;
 
     public int InventoryMoney
@@ -18,7 +18,7 @@ public class PlayerInventory : MonoBehaviour
         get => inventoryMoney;
         private set
         {
-            inventoryMoney = value; 
+            inventoryMoney = value;
             OnMoneyChanged?.Invoke(inventoryMoney);
         }
     }
@@ -29,16 +29,55 @@ public class PlayerInventory : MonoBehaviour
         ResetInventory();
     }
 
-    private void Start()
-    {
-        playerInventoryItems = new List<Items>();
-    }
-
     private void ResetInventory()
     {
         inventory.Clear();
-        playerInventoryItems.Clear();
-        inventoryUI.Clear();
+        playerInventoryUI.Clear();
+        UpdateUI();
+    }
+
+    public void AddItem(ItemSO item, int quantity)
+    {
+        if (inventory.ContainsKey(item))
+            inventory[item] += quantity;
+        else
+            inventory[item] = quantity;
+
+        Debug.Log($"Adding {quantity} of {item.ItemName} to inventory.");
+
+        OnInventoryChanged?.Invoke();
+        UpdateUI();
+    }
+
+    public void RemoveItem(ItemSO item, int quantity)
+    {
+        if (inventory.ContainsKey(item))
+        {
+            inventory[item] -= quantity;
+            if (inventory[item] <= 0)
+                inventory.Remove(item);
+
+            OnInventoryChanged?.Invoke();
+            UpdateUI();
+        }
+    }
+
+    public void UpdateUI()
+    {
+        playerInventoryUI.Clear();
+
+        foreach (var item in inventory)
+            playerInventoryUI.AddItemUI(item.Key, item.Value);
+    }
+
+    public bool CanAfford(int cost)
+    {
+        return GetMoney() >= cost;
+    }
+
+    public Dictionary<ItemSO, int> GetInventoryItems()
+    {
+        return inventory;
     }
 
     public int GetMoney()
@@ -51,38 +90,13 @@ public class PlayerInventory : MonoBehaviour
         InventoryMoney = newAmount;
     }
 
-    public void AddItem(ItemSO item, int quantity)
+    private void OnEnable()
     {
-        if (inventory.ContainsKey(item))
-            inventory[item] += quantity;
-        else
-            inventory[item] = quantity;
-
-        Items existingItem = playerInventoryItems.Find(i => i.Item == item);
-
-        if (existingItem != null)
-            existingItem.ChangeQuantity(existingItem.Quantity + quantity);
-        else
-            playerInventoryItems.Add(new Items(item, quantity));
-
-        OnInventoryChanged?.Invoke();
+        GameManager.Instance.OnSwitchUI += shopUI.ClosePopup;
     }
 
-    public void UpdateUI()
+    private void OnDisable()
     {
-        inventoryUI.Clear();
-
-        foreach (var item in inventory)
-            inventoryUI.AddItemUI(item.Key, item.Value);
-    }
-
-    public bool CanAfford(int cost)
-    {
-        return GetMoney() >= cost;
-    }
-
-    public List<Items> GetPlayerItems()
-    {
-        return playerInventoryItems;
+        GameManager.Instance.OnSwitchUI -= shopUI.ClosePopup;
     }
 }

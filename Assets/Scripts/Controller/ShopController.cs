@@ -3,13 +3,16 @@ using UnityEngine;
 
 public class ShopController
 {
-    [SerializeField] private ShopUI shopUI;
-    [SerializeField] private ShopSO shopData;
-    [SerializeField] private UIController uiManager;
-    [SerializeField] private int shopItemsListSize = 7;
-    [SerializeField] private int shopMoney = 1000;
+    private ShopUI shopUI;
+    private ShopSO shopData;
+    private UIController uiController;
+    private PlayerInventory playerInventory;
+
+    private int shopItemsListSize = 7;
+    private int shopMoney = 1000;
 
     public event Action<int> OnMoneyChanged;
+    
 
     public int ShopMoney
     {
@@ -22,11 +25,12 @@ public class ShopController
         }
     }
 
-    public ShopController(ShopUI shopUI, ShopSO shopData, UIController uiManager, int shopItemsListSize = 7, int initialMoney = 1000)
+    public ShopController(ShopUI shopUI, ShopSO shopData, UIController uiManager, PlayerInventory playerInventory, int shopItemsListSize = 7, int initialMoney = 1000)
     {
         this.shopUI = shopUI;
         this.shopData = shopData;
-        this.uiManager = uiManager;
+        this.uiController = uiManager;
+        this.playerInventory = playerInventory;
         this.shopItemsListSize = shopItemsListSize;
         this.shopMoney = initialMoney;
 
@@ -37,12 +41,14 @@ public class ShopController
     {
         shopData.Initialize(shopItemsListSize);
         SetUpUI();
+
+        Debug.Log("OnPurchaseConfirmed event subscribed.");
     }
 
     private void SetUpUI()
     {
-        shopUI.InitializeShopUIList(shopItemsListSize);
-        shopUI.OnDescriptionRequested += OnDescriptionRequested;
+        shopUI.InitializeUIList(shopItemsListSize);
+        shopUI.OnDescriptionRequested += OnShopDescriptionRequested;
 
         foreach (var item in shopData.GetCurrentShopItemState())
         {
@@ -50,18 +56,69 @@ public class ShopController
         }
     }
 
-    private void OnDescriptionRequested(int itemIndex)
+    private void OnShopDescriptionRequested(int itemIndex)
     {
+        Debug.Log("OnShopDescriptionRequested(int itemIndex) called");
+
         Items shopItem = shopData.GetItemAt(itemIndex);
 
-        if(shopItem.IsEmpty)
+        if (shopItem.IsEmpty)
             return;
 
         ItemSO item = shopItem.Item;
-        shopUI.UpdateDescription(itemIndex, item.ItemImage, item.ItemName, item.Description, item.Price);
+        shopUI.UpdateShopItemDescription(itemIndex, item.ItemImage, item.ItemName, item.Description, item.Price);
     }
 
-    public int GetMoney() => ShopMoney;
+    public void OnPurchaseConfirmed(int itemIndex)
+    {
+        Debug.Log("OnConfirmPurchase called");
 
-    public void SetMoney(int newAmount) => ShopMoney = newAmount;
+        Items shopItem = shopData.GetItemAt(itemIndex);
+        Debug.Log($"Shop item retrieved: {shopItem.Item.ItemName}");
+
+        if (shopItem.IsEmpty)
+        {
+            Debug.Log("Shop item is empty, cannot proceed with purchase.");
+            return;
+        }
+
+        if (playerInventory.CanAfford(shopItem.Item.Price))
+        {
+            Debug.Log($"Player can afford {shopItem.Item.ItemName}. Price: {shopItem.Item.Price}");
+
+            GameManager.Instance.InventoryController.AddItemToInventory(shopItem.Item);
+
+            int newPlayerMoney = playerInventory.GetMoney() - shopItem.Item.Price;
+            int newShopMoney = GameManager.Instance.ShopController.ShopMoney + shopItem.Item.Price;
+
+            playerInventory.SetMoney(newPlayerMoney);
+            GameManager.Instance.ShopController.SetMoney(newShopMoney);
+
+            shopItem.OnQuantityChanged += (newQuantity) =>
+            {
+                shopUI.UpdateData(itemIndex, shopItem.Item.ItemImage, newQuantity);
+            };
+
+            if (shopItem.Quantity > 0)
+            {
+                shopItem.ChangeQuantity(1);
+            }
+
+            shopUI.UpdateData(itemIndex, shopItem.Item.ItemImage, shopItem.Quantity);
+        }
+        else
+        {
+            Debug.Log("Not enough money!");
+        }
+    }
+
+    public void SetMoney(int amount)
+    {
+        if (ShopMoney >= amount)
+        {
+            ShopMoney -= amount;
+        }
+    }
+
+    public ShopUI GetShopUI() => shopUI;
 }

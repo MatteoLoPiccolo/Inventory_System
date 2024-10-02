@@ -9,11 +9,9 @@ public class ShopSO : ScriptableObject
 
     public void Initialize(int size)
     {
-        // if the list has no element in inspector or is empty
         if (shopItems == null || shopItems.Count == 0)
             shopItems = new List<Items>(size);
 
-        // Add item only if there are some empty spaces
         for (int i = shopItems.Count; i < size; i++)
             shopItems.Add(Items.GetEmptyItem());
     }
@@ -36,14 +34,6 @@ public class ShopSO : ScriptableObject
 
         return shopItems[itemIndex];
     }
-
-    public void RemoveItemAt(int itemIndex)
-    {
-        if (itemIndex < 0 || itemIndex >= shopItems.Count)
-            throw new IndexOutOfRangeException();
-
-        shopItems[itemIndex] = Items.GetEmptyItem();
-    }
 }
 
 [Serializable]
@@ -51,6 +41,8 @@ public class Items
 {
     [SerializeField] private int quantity;
     [SerializeField] private ItemSO item;
+
+    public event Action<int> OnQuantityChanged;
 
     public int Quantity => quantity;
 
@@ -64,9 +56,11 @@ public class Items
         this.quantity = quantity;
     }
 
-    public void ChangeQuantity(int newQuantity)
+    public void ChangeQuantity(int amount)
     {
-        quantity = newQuantity;
+        quantity -= amount;
+
+        OnQuantityChanged?.Invoke(quantity);
     }
 
     public static Items GetEmptyItem() => new Items(null, 0);

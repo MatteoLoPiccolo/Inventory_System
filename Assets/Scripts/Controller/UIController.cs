@@ -1,5 +1,5 @@
-using UnityEngine;
 using TMPro;
+using UnityEngine;
 
 public class UIController : MonoBehaviour
 {
@@ -18,13 +18,12 @@ public class UIController : MonoBehaviour
     private void Start()
     {
         playerInventory.OnMoneyChanged += UpdatePlayerMoneyUI;
-        GameManager.Instance.GetShopController().OnMoneyChanged += UpdateShopMoneyUI;
-        
+        GameManager.Instance.ShopController.OnMoneyChanged += UpdateShopMoneyUI;
+
         ShowPlayerInventory();
         SetTextMoneyUI();
     }
 
-    // Show the shop and hide the inventory
     public void ShowShop()
     {
         SetCanvasGroupVisibility(shopCanvasGroup, true);
@@ -36,7 +35,6 @@ public class UIController : MonoBehaviour
         isShopOpen = true;
     }
 
-    // Show inventory and hide the shop
     public void ShowPlayerInventory()
     {
         SetCanvasGroupVisibility(shopCanvasGroup, false);
@@ -46,9 +44,10 @@ public class UIController : MonoBehaviour
         inventoryText.gameObject.SetActive(true);
 
         isShopOpen = false;
+
+        GameManager.Instance.ShopController.GetShopUI().ClosePopup();
     }
 
-    // Use CanvasGroup to manage visibility and interaction
     private void SetCanvasGroupVisibility(CanvasGroup canvasGroup, bool isVisible)
     {
         canvasGroup.alpha = isVisible ? 1 : 0; // Check the transparency
@@ -56,7 +55,6 @@ public class UIController : MonoBehaviour
         canvasGroup.blocksRaycasts = isVisible; // Enable or disable raycast (for clic)
     }
 
-    // If the shop is visible, the inventory is invisible and viceversa
     public void ToggleShop()
     {
         if (isShopOpen)
@@ -68,12 +66,12 @@ public class UIController : MonoBehaviour
     public void SetTextMoneyUI()
     {
         if (playerMoneyText)
-            playerMoneyText.text = $"Player $: {playerInventory.InventoryMoney}";
+            playerMoneyText.text = $"Player $: {GameManager.Instance.PlayerInventory.InventoryMoney}";
         else
             Debug.LogError("playerMoneyText is null");
 
         if (shopMoneyText)
-            shopMoneyText.text = $"Shop $ : {GameManager.Instance.GetShopController().ShopMoney}";
+            shopMoneyText.text = $"Shop $ : {GameManager.Instance.ShopController.ShopMoney}";
         else
             Debug.LogError("shopMoneyText is null");
     }

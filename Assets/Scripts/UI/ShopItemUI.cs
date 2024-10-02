@@ -9,7 +9,8 @@ public class ShopItemUI : MonoBehaviour, IPointerClickHandler
     [SerializeField] private Image itemImage;
     [SerializeField] private TMP_Text itemQuantityText;
 
-    public event Action<ShopItemUI> OnItemClicked, OnRightMouseButtonClicked;
+    public event Action<ShopItemUI> OnItemClicked;
+    public event Action<ShopItemUI> OnRightMouseButtonClicked;
 
     private void Awake()
     {
