@@ -97,7 +97,7 @@ public class ShopController
 
             if (shopItem.Quantity > 0)
             {
-                shopItem.ChangeQuantity(1);
+                shopItem.ChangeQuantity();
             }
 
             shopUI.UpdateData(itemIndex, shopItem.Item.ItemImage, shopItem.Quantity);

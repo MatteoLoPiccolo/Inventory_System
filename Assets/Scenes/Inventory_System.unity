@@ -1614,7 +1614,7 @@ MonoBehaviour:
   contentRectTransform: {fileID: 779429426050076389}
   moneyText: {fileID: 1331852553512170341}
   playerInventory: {fileID: 9189724912487397906}
-  purchasePopupPrefab: {fileID: 8085747027935952512, guid: 437fd398720e3344798f5c3a342feeb2, type: 3}
+  sellPopupPrefab: {fileID: 7234116092333235945, guid: 78748e8a8df50a742ab291f43f09a797, type: 3}
   itemPrefab: {fileID: 5980174525863406311, guid: 0cc99527c3ba2a24fa847b79667491f9, type: 3}
   shopItemSO: {fileID: 11400000, guid: 3eed4c39e2e006b43b6fc9e21ed509bc, type: 2}
 --- !u!222 &2301864234400417444

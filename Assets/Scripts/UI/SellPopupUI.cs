@@ -3,12 +3,12 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PurchasePopupUI : MonoBehaviour
+public class SellPopupUI : MonoBehaviour
 {
     [SerializeField] private Image itemImage;
     [SerializeField] private TMP_Text itemNameText;
-    [SerializeField] private TMP_Text priceText;
-    [SerializeField] private Button buyButton;
+    [SerializeField] private TMP_Text sellText;
+    [SerializeField] private Button sellButton;
     [SerializeField] private Button backButton;
     [SerializeField] private UIController uIController;
     [SerializeField] private ShopUI shopUI;
@@ -16,7 +16,7 @@ public class PurchasePopupUI : MonoBehaviour
     [SerializeField] private PlayerInventory playerInventory;
     [SerializeField] private PlayerInventoryUI playerInventoryUI;
 
-    public event Action<int> OnPurchaseConfirmed;
+    public event Action<int> OnSellConfirmed;
 
     private int itemIndex;
 
@@ -24,34 +24,33 @@ public class PurchasePopupUI : MonoBehaviour
     {
         itemImage.sprite = itemSprite;
         itemNameText.text = $"{itemName} x{quantity}";
-        priceText.text = $"Price: {price}";
+        sellText.text = $"Price: {price}";
         itemIndex = index;
 
         gameObject.SetActive(true);
     }
 
-    private void OnConfirmPurchase()
+    private void ConfirmedSell()
     {
         Debug.Log("Buy button clicked, invoking purchase confirmed");
         Debug.Log($"Confirming purchase for item index: {itemIndex}");
-        OnPurchaseConfirmed?.Invoke(itemIndex);
+        OnSellConfirmed?.Invoke(itemIndex);
     }
 
     private void OnEnable()
     {
-        buyButton.onClick.AddListener(OnConfirmPurchase);
+        sellButton.onClick.AddListener(ConfirmedSell);
         backButton.onClick.AddListener(ClosePopup);
     }
 
     private void OnDisable()
     {
-        buyButton.onClick.RemoveListener(OnConfirmPurchase);
+        sellButton.onClick.RemoveListener(ConfirmedSell);
         backButton.onClick.RemoveListener(ClosePopup);
     }
 
     public void ClosePopup()
     {
         gameObject.SetActive(false);
-        OnPurchaseConfirmed -= GameManager.Instance.ShopController.OnPurchaseConfirmed;
     }
 }

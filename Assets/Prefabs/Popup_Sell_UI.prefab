@@ -866,7 +866,7 @@ GameObject:
   - component: {fileID: 9194358596346349055}
   - component: {fileID: 4306147229961606556}
   - component: {fileID: 47197059483973615}
-  - component: {fileID: 8085747027935952512}
+  - component: {fileID: 7234116092333235945}
   m_Layer: 5
   m_Name: Popup_Sell_UI
   m_TagString: Untagged
@@ -974,7 +974,7 @@ MonoBehaviour:
   m_ChildScaleWidth: 0
   m_ChildScaleHeight: 0
   m_ReverseArrangement: 0
---- !u!114 &8085747027935952512
+--- !u!114 &7234116092333235945
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -983,16 +983,15 @@ MonoBehaviour:
   m_GameObject: {fileID: 7551687000477815143}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ac5049a3d04aece4e81e47eb636711dc, type: 3}
+  m_Script: {fileID: 11500000, guid: 3a925d9fa50307d429fd0b9928bf56a5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   itemImage: {fileID: 4639483224637007942}
   itemNameText: {fileID: 7152010905184677213}
-  priceText: {fileID: 1947048108121945622}
-  buyButton: {fileID: 6084447090332078868}
+  sellText: {fileID: 7937524079253664866}
+  sellButton: {fileID: 6084447090332078868}
   backButton: {fileID: 6988832352065743626}
-  shopController: {fileID: 2259013946322303309, guid: 24fef5f6458ef0242be60dcf96459588, type: 3}
-  uIController: {fileID: 3931499094671520057, guid: 4dc3490206995a7488a92fe2297edfc6, type: 3}
-  shopUI: {fileID: 8853993924455606259, guid: 9bad68ead76ab4246bb5098125721cc2, type: 3}
+  uIController: {fileID: 0}
+  shopUI: {fileID: 0}
   playerInventory: {fileID: 0}
-  playerInventoryUI: {fileID: 5742710605389912941, guid: e0d9a807907782e48a9d3a513fef0a80, type: 3}
+  playerInventoryUI: {fileID: 0}

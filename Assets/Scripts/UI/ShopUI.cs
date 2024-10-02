@@ -65,7 +65,8 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
         if (popup.gameObject.activeInHierarchy)
         {
             int index = uiShopItems.IndexOf(itemUI);
-            if (index == -1) return;
+            if (index == -1) 
+                return;
 
             Items shopItem = shopItemSO.GetItemAt(index);
             if (shopItem == null || shopItem.Item == null)
@@ -87,7 +88,7 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
             return;
 
         popup.Show(newItem.Item.ItemImage, newItem.Item.ItemName, newItem.Quantity, newItem.Item.Price, newIndex);
-                
+        
         popup.OnPurchaseConfirmed += GameManager.Instance.ShopController.OnPurchaseConfirmed;
     }
 

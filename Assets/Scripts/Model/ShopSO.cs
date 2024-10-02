@@ -56,9 +56,9 @@ public class Items
         this.quantity = quantity;
     }
 
-    public void ChangeQuantity(int amount)
+    public void ChangeQuantity()
     {
-        quantity -= amount;
+        quantity --;
 
         OnQuantityChanged?.Invoke(quantity);
     }

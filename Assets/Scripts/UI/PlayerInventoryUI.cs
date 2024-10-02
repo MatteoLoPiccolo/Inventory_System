@@ -1,11 +1,12 @@
 using System;
 using System.Linq;
+using System.Reflection;
 using UnityEngine;
 
 public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
 {
     [SerializeField] private PlayerInventory playerInventory;
-    [SerializeField] private PurchasePopupUI purchasePopupPrefab;
+    [SerializeField] private SellPopupUI sellPopupPrefab;
     [SerializeField] private InventoryItemUI itemPrefab;
 
     [SerializeField] private ShopSO shopItemSO;
@@ -50,12 +51,6 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
             newItem.OnRightMouseButtonClicked += OnRightClick;
             uiInventoryItems.Add(newItem);
         }
-    }
-
-    private void UnsubscribeFromOnInventoryItemAdded()
-    {
-        Debug.Log("UnsubscribeFromOnInventoryItemAdded is called");
-        playerInventory.OnInventoryItemAdded -= AddItemUI; ;
     }
 
     public override void Clear()
@@ -110,5 +105,34 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
         int index = uiInventoryItems.IndexOf(itemUI);
         if (index == -1)
             return;
+
+        PurchasePopupUI popup = ActivePopupUIInstance;
+
+        if (popup.gameObject.activeInHierarchy)
+        {
+            var playerItems = playerInventory.GetInventoryItems();
+            var playerItem = playerItems.ElementAtOrDefault(index);
+
+            if (playerItem.Key == null || playerItem.Value <= 0)
+                return;
+
+            popup.Show(playerItem.Key.ItemImage, playerItem.Key.ItemName, playerItem.Value, playerItem.Key.Price, index);
+            return;
+        }
+
+        int newIndex = uiInventoryItems.IndexOf(itemUI);
+        if (newIndex == -1)
+            return;
+
+        popup.gameObject.SetActive(true);
+        Debug.Log(popup.gameObject.activeInHierarchy);
+
+        //Items newItem = shopItemSO.GetItemAt(newIndex);
+        //if (newItem == null || newItem.Item == null)
+        //    return;
+
+        //popup.Show(newItem.Item.ItemImage, newItem.Item.ItemName, newItem.Quantity, newItem.Item.Price, newIndex);
+
+        //popup.OnPurchaseConfirmed += GameManager.Instance.ShopController.OnPurchaseConfirmed;
     }
 }
