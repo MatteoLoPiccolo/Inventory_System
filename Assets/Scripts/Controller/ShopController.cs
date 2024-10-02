@@ -12,6 +12,7 @@ public class ShopController
     private int shopMoney = 1000;
 
     public event Action<int> OnMoneyChanged;
+    
 
     public int ShopMoney
     {
@@ -93,7 +94,17 @@ public class ShopController
             playerInventory.SetMoney(newPlayerMoney);
             GameManager.Instance.ShopController.SetMoney(newShopMoney);
 
-            shopUI.UpdateData(itemIndex, shopItem.Item.ItemImage, shopItem.Quantity - 1);
+            shopItem.OnQuantityChanged += (newQuantity) =>
+            {
+                shopUI.UpdateData(itemIndex, shopItem.Item.ItemImage, newQuantity);
+            };
+
+            if (shopItem.Quantity > 0)
+            {
+                shopItem.ChangeQuantity(1);
+            }
+
+            shopUI.UpdateData(itemIndex, shopItem.Item.ItemImage, shopItem.Quantity);
         }
         else
         {

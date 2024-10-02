@@ -55,6 +55,7 @@ public abstract class BaseInventoryUI<T> : MonoBehaviour where T : MonoBehaviour
     {
         foreach (Transform child in contentRectTransform)
             Destroy(child.gameObject);
+
         uiShopItems.Clear();
     }
 

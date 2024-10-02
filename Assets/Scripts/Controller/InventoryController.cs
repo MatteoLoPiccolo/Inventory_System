@@ -44,7 +44,6 @@ public class InventoryController
 
     private void SetUpUI()
     {
-        //playerInventoryUI.InitializeList(inventoryItemsListSize);
         playerInventoryUI.OnDescriptionRequested += OnInventoryDescriptionRequested;
 
         Debug.Log("Subscribe to OnInventoryDescriptionRequested event");
@@ -82,18 +81,6 @@ public class InventoryController
 
         playerInventoryUI.UpdateInventoryItemDescription(itemIndex, itemSO.ItemImage, itemSO.ItemName, itemSO.Description, itemSO.Price);
     }
-
-
-    //private void OnDescriptionRequested(int itemIndex)
-    //{
-    //    Items shopItem = shopData.GetItemAt(itemIndex);
-
-    //    if (shopItem.IsEmpty)
-    //        return;
-
-    //    ItemSO item = shopItem.Item;
-    //    playerInventoryUI.UpdateInventoryItemDescription(itemIndex, item.ItemImage, item.ItemName, item.Description, item.Price);
-    //}
 
     public void SetMoney(int amount)
     {

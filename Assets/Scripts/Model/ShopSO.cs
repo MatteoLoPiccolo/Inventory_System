@@ -42,6 +42,8 @@ public class Items
     [SerializeField] private int quantity;
     [SerializeField] private ItemSO item;
 
+    public event Action<int> OnQuantityChanged;
+
     public int Quantity => quantity;
 
     public ItemSO Item => item;
@@ -54,9 +56,11 @@ public class Items
         this.quantity = quantity;
     }
 
-    public void ChangeQuantity(int newQuantity)
+    public void ChangeQuantity(int amount)
     {
-        quantity = newQuantity;
+        quantity -= amount;
+
+        OnQuantityChanged?.Invoke(quantity);
     }
 
     public static Items GetEmptyItem() => new Items(null, 0);

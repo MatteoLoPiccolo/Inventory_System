@@ -76,7 +76,7 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
         }
 
         int newIndex = uiShopItems.IndexOf(itemUI);
-        if (newIndex == -1) 
+        if (newIndex == -1)
             return;
 
         popup.gameObject.SetActive(true);

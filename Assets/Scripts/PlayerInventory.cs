@@ -80,18 +80,6 @@ public class PlayerInventory : MonoBehaviour
         return inventory;
     }
 
-    //public List<Items> GetPlayerItems()
-    //{
-    //    List<Items> itemsList = new List<Items>();
-
-    //    foreach (var kvp in inventory)
-    //    {
-    //        itemsList.Add(new Items(kvp.Key, kvp.Value));
-    //    }
-
-    //    return itemsList;
-    //}
-
     public int GetMoney()
     {
         return InventoryMoney;

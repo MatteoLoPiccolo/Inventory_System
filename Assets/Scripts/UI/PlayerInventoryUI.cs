@@ -17,7 +17,7 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
 
     private void UpdateInventoryUI()
     {
-        Clear();
+        //Clear();
 
         foreach (var item in playerInventory.GetInventoryItems())
         {
@@ -27,6 +27,7 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
 
     public void AddItemUI(ItemSO item, int quantity)
     {
+
         InventoryItemUI newItem = Instantiate(itemPrefab, contentRectTransform);
         newItem.SetItem(item.ItemImage, quantity);
         newItem.gameObject.SetActive(true);
@@ -41,7 +42,7 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
         {
             Destroy(item.gameObject);
         }
-        
+
         uiInventoryItems.Clear();
         base.Clear();
     }
