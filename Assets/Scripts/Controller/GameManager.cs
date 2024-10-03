@@ -8,6 +8,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private PlayerInventoryUI playerInventoryUI;
     [SerializeField] private PlayerInventory playerInventory;
     [SerializeField] private UIController uiController;
+    [SerializeField] private UiItemDescription itemDescription;
+
+    [SerializeField] private PurchasePopupUI purchasePopupUI;
 
     [SerializeField] private int listCount = 7;
     [SerializeField] private int shopMoney = 1000;
@@ -24,7 +27,11 @@ public class GameManager : MonoBehaviour
 
     public PlayerInventory PlayerInventory { get { return playerInventory; } }
 
-    internal InventoryController InventoryController { get { return inventoryController; } }
+    public InventoryController InventoryController { get { return inventoryController; } }
+
+    public UiItemDescription UiItemDescription { get { return itemDescription; } }
+
+    public PurchasePopupUI PurchasePopupUI {  get { return purchasePopupUI; } }
 
     public event Action OnSwitchUI;
 

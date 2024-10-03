@@ -1,4 +1,5 @@
 using System;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShopController
@@ -99,8 +100,6 @@ public class ShopController
             {
                 shopItem.ChangeQuantity();
             }
-
-            shopUI.UpdateData(itemIndex, shopItem.Item.ItemImage, shopItem.Quantity);
         }
         else
         {

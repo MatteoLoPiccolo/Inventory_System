@@ -59,7 +59,6 @@ public class Items
     public void ChangeQuantity()
     {
         quantity --;
-
         OnQuantityChanged?.Invoke(quantity);
     }
 

@@ -23,7 +23,7 @@ public class PurchasePopupUI : MonoBehaviour
     public void Show(Sprite itemSprite, string itemName, int quantity, int price, int index)
     {
         itemImage.sprite = itemSprite;
-        itemNameText.text = $"{itemName} x{quantity}";
+        itemNameText.text = $"{itemName}";
         priceText.text = $"Price: {price}";
         itemIndex = index;
 

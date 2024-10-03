@@ -373,6 +373,8 @@ MonoBehaviour:
   playerInventoryUI: {fileID: 2297106691557144778}
   playerInventory: {fileID: 9189724912487397906}
   uiController: {fileID: 8797912017164440862}
+  itemDescription: {fileID: 0}
+  purchasePopupUI: {fileID: 8085747027935952512, guid: 437fd398720e3344798f5c3a342feeb2, type: 3}
   listCount: 7
   shopMoney: 1000
   inventoryMoney: 100
@@ -449,7 +451,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7152010905184677213, guid: 437fd398720e3344798f5c3a342feeb2, type: 3}
       propertyPath: m_text
-      value: Health Potion
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 7551687000477815143, guid: 437fd398720e3344798f5c3a342feeb2, type: 3}
       propertyPath: m_Name
