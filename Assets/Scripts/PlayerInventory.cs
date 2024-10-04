@@ -21,7 +21,6 @@ public class PlayerInventory : MonoBehaviour
         {
             inventoryMoney = value;
             OnMoneyChanged?.Invoke(inventoryMoney);
-            Debug.Log("OnMoneyChanged?.Invoke(inventoryMoney) is called");
         }
     }
 
@@ -41,15 +40,9 @@ public class PlayerInventory : MonoBehaviour
     public void AddItem(ItemSO item, int quantity)
     {
         if (inventory.ContainsKey(item))
-        {
             inventory[item] += quantity;
-            Debug.Log($"Increased {item.ItemName} quantity by {quantity}. New quantity: {inventory[item]}.");
-        }
         else
-        {
             inventory[item] = quantity;
-            Debug.Log($"Adding {quantity} of {item.ItemName} to inventory.");
-        }
 
         OnInventoryItemAdded?.Invoke(item, inventory[item]);
     }
@@ -90,15 +83,5 @@ public class PlayerInventory : MonoBehaviour
     public void SetMoney(int newAmount)
     {
         InventoryMoney = newAmount;
-    }
-
-    private void OnEnable()
-    {
-        GameManager.Instance.OnSwitchUI += shopUI.ClosePurchasePopup;
-    }
-
-    private void OnDisable()
-    {
-        GameManager.Instance.OnSwitchUI -= shopUI.ClosePurchasePopup;
     }
 }

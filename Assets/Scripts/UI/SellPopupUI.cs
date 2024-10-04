@@ -27,8 +27,6 @@ public class SellPopupUI : MonoBehaviour
 
     private void ConfirmedSell()
     {
-        Debug.Log("Buy button clicked, invoking purchase confirmed");
-        Debug.Log($"Confirming purchase for item index: {itemIndex}");
         OnSellConfirmed?.Invoke(itemIndex);
     }
 

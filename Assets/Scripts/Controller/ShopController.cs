@@ -21,7 +21,6 @@ public class ShopController
         {
             shopMoney = value;
             OnMoneyChanged?.Invoke(shopMoney);
-            Debug.Log("OnMoneyChanged?.Invoke(shopMoney) is called");
         }
     }
 
@@ -58,8 +57,6 @@ public class ShopController
 
     private void OnShopDescriptionRequested(int itemIndex)
     {
-        Debug.Log("OnShopDescriptionRequested(int itemIndex) called");
-
         Items shopItem = shopData.GetItemAt(itemIndex);
 
         if (shopItem.IsEmpty)
@@ -81,8 +78,6 @@ public class ShopController
 
         if (playerInventory.CanAfford(shopItem.Item.Price))
         {
-            Debug.Log($"OnPurchaseConfirmed called for item: {shopItem.Item.ItemName}, Quantity: {shopItem.Quantity}");
-
             int buyQuantity = 1;
             playerInventory.AddItem(shopItem.Item, buyQuantity);
 

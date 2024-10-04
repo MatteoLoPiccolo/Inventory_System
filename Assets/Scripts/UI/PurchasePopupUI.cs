@@ -27,8 +27,6 @@ public class PurchasePopupUI : MonoBehaviour
 
     private void OnConfirmPurchase()
     {
-        Debug.Log("Buy button clicked, invoking purchase confirmed");
-        Debug.Log($"Confirming purchase for item index: {itemIndex}");
         OnPurchaseConfirmed?.Invoke(itemIndex);
     }
 

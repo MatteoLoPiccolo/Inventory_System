@@ -33,36 +33,23 @@ public class GameManager : MonoBehaviour
 
     public PurchasePopupUI PurchasePopupUI {  get { return purchasePopupUI; } }
 
-    public event Action OnSwitchUI;
-
     private void Awake()
     {
         if (instance != null && instance != this)
-        {
             Destroy(gameObject);
-        }
         else
-        {
             instance = this;
-        }
 
         inventoryController = new InventoryController(playerInventoryUI, playerInventory, shopData, shopUI, inventoryMoney);
         inputManager = new InputManager();
-
-        //shopMoney = 1000;
-        //inventoryMoney = 100;
     }
 
     private void Start()
     {
         if (uiController == null)
-        {
             Debug.LogError("UIController is null in GameManager!");
-        }
         else
-        {
             inputManager.OnInventoryTogglePressed += uiController.ToggleShop;
-        }
 
         shopController = new ShopController(shopUI, shopData, uiController, playerInventory, listCount, shopMoney);
     }
@@ -70,8 +57,6 @@ public class GameManager : MonoBehaviour
     private void Update()
     {
         if (Input.GetKeyUp(KeyCode.I))
-        {
             inputManager.HandleInput();
-        }
     }
 }

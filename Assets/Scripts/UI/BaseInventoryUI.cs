@@ -15,7 +15,6 @@ public abstract class BaseInventoryUI<T> : MonoBehaviour where T : MonoBehaviour
     protected List<T> uiInventoryItems = new List<T>();
 
     public event Action<int> OnDescriptionRequested;
-    public event Action<int> OnItemActionRequested;
 
     public List<T> GetUIShopItems() { return uiShopItems; }
 

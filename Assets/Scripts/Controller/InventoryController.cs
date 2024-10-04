@@ -60,8 +60,6 @@ public class InventoryController
 
     private void OnInventoryDescriptionRequested(int itemIndex)
     {
-        Debug.Log("OnInventoryDescriptionRequested(int itemIndex) called");
-
         var inventoryItems = playerInventory.GetInventoryItems().ToList();
 
         if (itemIndex < 0 || itemIndex >= inventoryItems.Count)
@@ -91,8 +89,6 @@ public class InventoryController
             return;
         }
 
-        Debug.Log($"OnSellConfirmed called for item: {playerItem.Key.ItemName}, Quantity: {playerItem.Value}");
-
         int sellQuantity = 1;
 
         playerInventory.RemoveItem(playerItem.Key, sellQuantity);
@@ -105,8 +101,6 @@ public class InventoryController
         GameManager.Instance.ShopController.SetMoney(newShopMoney);
 
         playerInventoryUI.UpdateData(itemIndex, playerItem.Key, playerItem.Value - sellQuantity);
-
-        Debug.Log("Item sold and UI updated.");
     }
     
     public PlayerInventoryUI GetInventoryUI() => playerInventoryUI;

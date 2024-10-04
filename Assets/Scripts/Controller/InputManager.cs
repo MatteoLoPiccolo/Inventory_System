@@ -8,8 +8,6 @@ public class InputManager
     public void HandleInput()
     {
         if (Input.GetKeyUp(KeyCode.I))
-        {
             OnInventoryTogglePressed?.Invoke();
-        }
     }
 }

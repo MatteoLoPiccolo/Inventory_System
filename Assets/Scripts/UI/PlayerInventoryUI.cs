@@ -50,11 +50,6 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
 
     public override void Clear()
     {
-        foreach (var item in uiInventoryItems)
-        {
-            Destroy(item.gameObject);
-        }
-
         uiInventoryItems.Clear();
         base.Clear();
     }
@@ -75,8 +70,6 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
 
     protected override void OnLeftClick(InventoryItemUI itemUI)
     {
-        Debug.Log("Left click detected in Inventory");
-
         int index = uiInventoryItems.IndexOf(itemUI);
         if (index == -1)
             return;
@@ -95,13 +88,9 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
 
     protected override void OnRightClick(InventoryItemUI itemUI)
     {
-        Debug.Log("Right click detected in Inventory");
-
         int index = uiInventoryItems.IndexOf(itemUI);
         if (index == -1)
             return;
-
-        Debug.Log($"newIndex: {index}, Total items: {uiInventoryItems.Count}");
 
         SellPopupUI popup = ActiveSellPopupUIInstance;
 
@@ -113,7 +102,6 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
             return;
 
         popup.gameObject.SetActive(true);
-        Debug.Log(popup.gameObject.activeInHierarchy);
 
         var playerItems = playerInventory.GetInventoryItems();
         var playerItem = playerItems.ElementAtOrDefault(index);

@@ -1,14 +1,10 @@
 using System;
-using System.Linq;
 using UnityEngine;
 
 public class ShopUI : BaseInventoryUI<ShopItemUI>
 {
     [SerializeField] private ShopItemUI itemPrefab;
     [SerializeField] private ShopSO shopItemSO;
-
-    public event Action<int> OnItemLeftClicked;
-    public event Action<int> OnItemRightClicked;
 
     protected override void Awake()
     {
@@ -70,7 +66,6 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
             return;
 
         popup.gameObject.SetActive(true);
-        Debug.Log(popup.gameObject.activeInHierarchy);
 
         Items newItem = shopItemSO.GetItemAt(newIndex);
         if (newItem == null || newItem.Item == null)
@@ -94,13 +89,11 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwitchUI += ClosePurchasePopup;
         GameManager.Instance.PlayerInventory.OnInventoryItemAdded += AddItemToShopUI;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwitchUI -= ClosePurchasePopup;
         GameManager.Instance.PlayerInventory.OnInventoryItemAdded -= AddItemToShopUI;
     }
 }
