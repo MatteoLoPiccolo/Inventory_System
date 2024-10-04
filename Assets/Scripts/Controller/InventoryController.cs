@@ -96,6 +96,7 @@ public class InventoryController
         int sellQuantity = 1;
 
         playerInventory.RemoveItem(playerItem.Key, sellQuantity);
+        shopUI.AddItemToShopUI(playerItem.Key, sellQuantity);
 
         int newPlayerMoney = playerInventory.GetMoney() + playerItem.Key.Price;
         playerInventory.SetMoney(newPlayerMoney);

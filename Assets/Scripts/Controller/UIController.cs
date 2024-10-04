@@ -8,16 +8,14 @@ public class UIController : MonoBehaviour
     [SerializeField] private TMP_Text shopText;
     [SerializeField] private TMP_Text inventoryText;
     [SerializeField] private PlayerInventory playerInventory;
-    [SerializeField] private PlayerInventoryUI playerInventoryUI;
     [SerializeField] private TMP_Text playerMoneyText;
-    [SerializeField] private ShopUI shopUI;
     [SerializeField] private TMP_Text shopMoneyText;
 
     private bool isShopOpen = false;
 
     private void Start()
     {
-        playerInventory.OnMoneyChanged += UpdatePlayerMoneyUI;
+        GameManager.Instance.PlayerInventory.OnMoneyChanged += UpdatePlayerMoneyUI;
         GameManager.Instance.ShopController.OnMoneyChanged += UpdateShopMoneyUI;
 
         ShowPlayerInventory();

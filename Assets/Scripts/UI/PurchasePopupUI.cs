@@ -10,11 +10,6 @@ public class PurchasePopupUI : MonoBehaviour
     [SerializeField] private TMP_Text priceText;
     [SerializeField] private Button buyButton;
     [SerializeField] private Button backButton;
-    [SerializeField] private UIController uIController;
-    [SerializeField] private ShopUI shopUI;
-
-    [SerializeField] private PlayerInventory playerInventory;
-    [SerializeField] private PlayerInventoryUI playerInventoryUI;
 
     public event Action<int> OnPurchaseConfirmed;
 

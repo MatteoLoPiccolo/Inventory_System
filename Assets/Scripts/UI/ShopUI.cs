@@ -5,7 +5,6 @@ using UnityEngine;
 public class ShopUI : BaseInventoryUI<ShopItemUI>
 {
     [SerializeField] private ShopItemUI itemPrefab;
-    [SerializeField] private PlayerInventory playerInventory;
     [SerializeField] private ShopSO shopItemSO;
 
     public event Action<int> OnItemLeftClicked;
@@ -82,7 +81,7 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
         popup.OnPurchaseConfirmed += GameManager.Instance.ShopController.OnPurchaseConfirmed;
     }
 
-    private void AddItemToShopUI(ItemSO item, int quantity)
+    public void AddItemToShopUI(ItemSO item, int quantity)
     {
         Debug.Log("AddItemToShopUI");
         // TODO

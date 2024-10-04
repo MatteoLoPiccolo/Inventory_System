@@ -21,6 +21,7 @@ public class PlayerInventory : MonoBehaviour
         {
             inventoryMoney = value;
             OnMoneyChanged?.Invoke(inventoryMoney);
+            Debug.Log("OnMoneyChanged?.Invoke(inventoryMoney) is called");
         }
     }
 

@@ -10,11 +10,6 @@ public class SellPopupUI : MonoBehaviour
     [SerializeField] private TMP_Text sellText;
     [SerializeField] private Button sellButton;
     [SerializeField] private Button backButton;
-    [SerializeField] private UIController uIController;
-    [SerializeField] private ShopUI shopUI;
-
-    [SerializeField] private PlayerInventory playerInventory;
-    [SerializeField] private PlayerInventoryUI playerInventoryUI;
 
     public event Action<int> OnSellConfirmed;
 

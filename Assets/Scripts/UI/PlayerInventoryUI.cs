@@ -4,10 +4,7 @@ using UnityEngine;
 public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
 {
     [SerializeField] private PlayerInventory playerInventory;
-    [SerializeField] private SellPopupUI sellPopupPrefab;
     [SerializeField] private InventoryItemUI itemPrefab;
-
-    [SerializeField] private ShopSO shopItemSO;
 
     private void Start()
     {

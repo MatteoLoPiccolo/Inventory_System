@@ -21,8 +21,11 @@ public class ShopController
         {
             shopMoney = value;
             OnMoneyChanged?.Invoke(shopMoney);
+            Debug.Log("OnMoneyChanged?.Invoke(shopMoney) is called");
         }
     }
+
+    public ShopUI GetShopUI() => shopUI;
 
     public ShopController(ShopUI shopUI, ShopSO shopData, UIController uiManager, PlayerInventory playerInventory, int shopItemsListSize = 7, int initialMoney = 1000)
     {
@@ -107,11 +110,6 @@ public class ShopController
 
     public void SetMoney(int amount)
     {
-        if (ShopMoney >= amount)
-        {
-            ShopMoney -= amount;
-        }
+        ShopMoney = amount;
     }
-
-    public ShopUI GetShopUI() => shopUI;
 }
