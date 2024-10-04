@@ -1,87 +1,108 @@
+using Model;
 using System;
 using System.Collections.Generic;
+using UI;
 using UnityEngine;
 
-public class PlayerInventory : MonoBehaviour
+namespace Player
 {
-    [SerializeField] private PlayerInventoryUI playerInventoryUI;
-    [SerializeField] private ShopUI shopUI;
-    [SerializeField] private int inventoryMoney;
-
-    private Dictionary<ItemSO, int> inventory = new Dictionary<ItemSO, int>();
-
-    public event Action<int> OnMoneyChanged;
-    public event Action<ItemSO, int> OnInventoryItemAdded;
-    public event Action<ItemSO, int> OnInventoryItemRemove;
-
-    public int InventoryMoney
+    public class PlayerInventory : MonoBehaviour
     {
-        get => inventoryMoney;
-        private set
+        #region Variables
+
+        [SerializeField] private PlayerInventoryUI playerInventoryUI;
+        [SerializeField] private ShopUI shopUI;
+        [SerializeField] private int inventoryMoney;
+
+        private Dictionary<ItemSO, int> inventory = new Dictionary<ItemSO, int>();
+
+        public event Action<int> OnMoneyChanged;
+        public event Action<ItemSO, int> OnInventoryItemAdded;
+        public event Action<ItemSO, int> OnInventoryItemRemove;
+
+        #endregion
+
+        #region Properties
+
+        public int InventoryMoney
         {
-            inventoryMoney = value;
-            OnMoneyChanged?.Invoke(inventoryMoney);
+            get => inventoryMoney;
+            private set
+            {
+                inventoryMoney = value;
+                OnMoneyChanged?.Invoke(inventoryMoney);
+            }
         }
-    }
 
-    private void Awake()
-    {
-        inventoryMoney = 100;
-        ResetInventory();
-    }
+        #endregion
 
-    private void ResetInventory()
-    {
-        inventory.Clear();
-        playerInventoryUI.Clear();
-        UpdateUI();
-    }
+        #region Obj life cycle
 
-    public void AddItem(ItemSO item, int quantity)
-    {
-        if (inventory.ContainsKey(item))
-            inventory[item] += quantity;
-        else
-            inventory[item] = quantity;
-
-        OnInventoryItemAdded?.Invoke(item, inventory[item]);
-    }
-
-    public void RemoveItem(ItemSO item, int quantity)
-    {
-        if (inventory.ContainsKey(item))
+        private void Awake()
         {
-            inventory[item] -= quantity;
-            if (inventory[item] <= 0)
-                inventory.Remove(item);
-
-            OnInventoryItemRemove?.Invoke(item, inventory[item]);
+            inventoryMoney = 100;
+            ResetInventory();
         }
-    }
 
-    public void UpdateUI()
-    {
-        foreach (var item in inventory)
-            playerInventoryUI.AddItemUI(item.Key, item.Value);
-    }
+        #endregion
 
-    public bool CanAfford(int cost)
-    {
-        return GetMoney() >= cost;
-    }
+        #region Functions
 
-    public Dictionary<ItemSO, int> GetInventoryItems()
-    {
-        return inventory;
-    }
+        private void ResetInventory()
+        {
+            inventory.Clear();
+            playerInventoryUI.Clear();
+            UpdateUI();
+        }
 
-    public int GetMoney()
-    {
-        return InventoryMoney;
-    }
+        public void AddItem(ItemSO item, int quantity)
+        {
+            if (inventory.ContainsKey(item))
+                inventory[item] += quantity;
+            else
+                inventory[item] = quantity;
 
-    public void SetMoney(int newAmount)
-    {
-        InventoryMoney = newAmount;
+            OnInventoryItemAdded?.Invoke(item, inventory[item]);
+        }
+
+        public void RemoveItem(ItemSO item, int quantity)
+        {
+            if (inventory.ContainsKey(item))
+            {
+                inventory[item] -= quantity;
+                if (inventory[item] <= 0)
+                    inventory.Remove(item);
+
+                OnInventoryItemRemove?.Invoke(item, inventory[item]);
+            }
+        }
+
+        public void UpdateUI()
+        {
+            foreach (var item in inventory)
+                playerInventoryUI.AddItemUI(item.Key, item.Value);
+        }
+
+        public bool CanAfford(int cost)
+        {
+            return GetMoney() >= cost;
+        }
+
+        public Dictionary<ItemSO, int> GetInventoryItems()
+        {
+            return inventory;
+        }
+
+        public int GetMoney()
+        {
+            return InventoryMoney;
+        }
+
+        public void SetMoney(int newAmount)
+        {
+            InventoryMoney = newAmount;
+        }
+
+        #endregion
     }
 }

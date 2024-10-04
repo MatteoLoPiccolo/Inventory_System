@@ -1,116 +1,134 @@
+using Controller;
+using Model;
+using Player;
 using System.Linq;
 using UnityEngine;
 
-public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
+namespace UI
 {
-    [SerializeField] private PlayerInventory playerInventory;
-    [SerializeField] private InventoryItemUI itemPrefab;
-
-    private void Start()
+    public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
     {
-        playerInventory.OnInventoryItemAdded += AddItemUI;
-        UpdateInventoryUI();
-    }
+        #region Variables
 
-    private void UpdateInventoryUI()
-    {
-        foreach (var item in playerInventory.GetInventoryItems())
+        [SerializeField] private PlayerInventory playerInventory;
+        [SerializeField] private InventoryItemUI itemPrefab;
+
+        #endregion
+
+        #region Obj life cycle
+
+        private void Start()
         {
-            AddItemUI(item.Key, item.Value);
+            playerInventory.OnInventoryItemAdded += AddItemUI;
+            UpdateInventoryUI();
         }
-    }
 
-    public void AddItemUI(ItemSO item, int quantity)
-    {
-        InventoryItemUI existingItemUI = null;
+        #endregion
 
-        foreach (var uiItem in uiInventoryItems)
+        #region Functions
+
+        private void UpdateInventoryUI()
         {
-            if (uiItem.Item == item)
+            foreach (var item in playerInventory.GetInventoryItems())
             {
-                existingItemUI = uiItem;
-                break;
+                AddItemUI(item.Key, item.Value);
             }
         }
 
-        if (existingItemUI != null)
+        public void AddItemUI(ItemSO item, int quantity)
         {
-            existingItemUI.UpdateQuantity();
+            InventoryItemUI existingItemUI = null;
+
+            foreach (var uiItem in uiInventoryItems)
+            {
+                if (uiItem.Item == item)
+                {
+                    existingItemUI = uiItem;
+                    break;
+                }
+            }
+
+            if (existingItemUI != null)
+            {
+                existingItemUI.UpdateQuantity();
+            }
+            else
+            {
+                InventoryItemUI newItem = Instantiate(itemPrefab, contentRectTransform);
+                newItem.SetItem(item, quantity);
+                newItem.gameObject.SetActive(true);
+                newItem.OnItemClicked += OnLeftClick;
+                newItem.OnRightMouseButtonClicked += OnRightClick;
+                uiInventoryItems.Add(newItem);
+            }
         }
-        else
+
+        public override void Clear()
         {
-            InventoryItemUI newItem = Instantiate(itemPrefab, contentRectTransform);
-            newItem.SetItem(item, quantity);
-            newItem.gameObject.SetActive(true);
-            newItem.OnItemClicked += OnLeftClick;
-            newItem.OnRightMouseButtonClicked += OnRightClick;
-            uiInventoryItems.Add(newItem);
+            uiInventoryItems.Clear();
+            base.Clear();
         }
-    }
 
-    public override void Clear()
-    {
-        uiInventoryItems.Clear();
-        base.Clear();
-    }
+        public void UpdateInventoryItemDescription(int itemIndex, Sprite itemImage, string name, string description, int price)
+        {
+            if (itemIndex < 0 || itemIndex >= uiInventoryItems.Count)
+                return;
 
-    public void UpdateInventoryItemDescription(int itemIndex, Sprite itemImage, string name, string description, int price)
-    {
-        if (itemIndex < 0 || itemIndex >= uiInventoryItems.Count)
-            return;
+            itemDescription.SetDescription(itemImage, name, description, price);
+        }
 
-        itemDescription.SetDescription(itemImage, name, description, price);
-    }
+        public void UpdateData(int itemIndex, ItemSO item, int itemQuantity)
+        {
+            if (itemIndex < uiInventoryItems.Count)
+                uiInventoryItems[itemIndex].SetItem(item, itemQuantity);
+        }
 
-    public void UpdateData(int itemIndex, ItemSO item, int itemQuantity)
-    {
-        if (itemIndex < uiInventoryItems.Count)
-            uiInventoryItems[itemIndex].SetItem(item, itemQuantity);
-    }
+        protected override void OnLeftClick(InventoryItemUI itemUI)
+        {
+            int index = uiInventoryItems.IndexOf(itemUI);
+            if (index == -1)
+                return;
 
-    protected override void OnLeftClick(InventoryItemUI itemUI)
-    {
-        int index = uiInventoryItems.IndexOf(itemUI);
-        if (index == -1)
-            return;
+            var playerItems = playerInventory.GetInventoryItems();
+            var playerItem = playerItems.ElementAtOrDefault(index);
 
-        var playerItems = playerInventory.GetInventoryItems();
-        var playerItem = playerItems.ElementAtOrDefault(index);
+            if (playerItem.Key == null || playerItem.Value <= 0)
+                return;
 
-        if (playerItem.Key == null || playerItem.Value <= 0)
-            return;
+            InvokeDescriptionRequested(index);
 
-        InvokeDescriptionRequested(index);
+            if (activeSellPopupUIInstance.gameObject.activeInHierarchy)
+                ActiveSellPopupUIInstance.Show(playerItem.Key.ItemImage, playerItem.Key.ItemName, playerItem.Value, playerItem.Key.Price, index);
+        }
 
-        if (activeSellPopupUIInstance.gameObject.activeInHierarchy)
-            ActiveSellPopupUIInstance.Show(playerItem.Key.ItemImage, playerItem.Key.ItemName, playerItem.Value, playerItem.Key.Price, index);
-    }
+        protected override void OnRightClick(InventoryItemUI itemUI)
+        {
+            int index = uiInventoryItems.IndexOf(itemUI);
+            if (index == -1)
+                return;
 
-    protected override void OnRightClick(InventoryItemUI itemUI)
-    {
-        int index = uiInventoryItems.IndexOf(itemUI);
-        if (index == -1)
-            return;
+            SellPopupUI popup = ActiveSellPopupUIInstance;
 
-        SellPopupUI popup = ActiveSellPopupUIInstance;
+            if (popup.gameObject.activeInHierarchy)
+                return;
 
-        if (popup.gameObject.activeInHierarchy)
-            return;
+            int newIndex = uiInventoryItems.IndexOf(itemUI);
+            if (newIndex == -1)
+                return;
 
-        int newIndex = uiInventoryItems.IndexOf(itemUI);
-        if (newIndex == -1)
-            return;
+            popup.gameObject.SetActive(true);
 
-        popup.gameObject.SetActive(true);
+            var playerItems = playerInventory.GetInventoryItems();
+            var playerItem = playerItems.ElementAtOrDefault(index);
 
-        var playerItems = playerInventory.GetInventoryItems();
-        var playerItem = playerItems.ElementAtOrDefault(index);
+            if (playerItem.Key == null || playerItem.Value <= 0)
+                return;
 
-        if (playerItem.Key == null || playerItem.Value <= 0)
-            return;
+            popup.Show(playerItem.Key.ItemImage, playerItem.Key.ItemName, playerItem.Value, playerItem.Key.Price, index);
 
-        popup.Show(playerItem.Key.ItemImage, playerItem.Key.ItemName, playerItem.Value, playerItem.Key.Price, index);
+            popup.OnSellConfirmed += GameManager.Instance.InventoryController.OnSellConfirmed;
+        }
 
-        popup.OnSellConfirmed += GameManager.Instance.InventoryController.OnSellConfirmed;
+        #endregion
     }
 }

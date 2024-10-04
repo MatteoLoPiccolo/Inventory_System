@@ -1,50 +1,70 @@
+using Controller;
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class SellPopupUI : MonoBehaviour
+namespace UI
 {
-    [SerializeField] private Image itemImage;
-    [SerializeField] private TMP_Text itemNameText;
-    [SerializeField] private TMP_Text sellText;
-    [SerializeField] private Button sellButton;
-    [SerializeField] private Button backButton;
-
-    public event Action<int> OnSellConfirmed;
-
-    private int itemIndex;
-
-    public void Show(Sprite itemSprite, string itemName, int quantity, int price, int index)
+    public class SellPopupUI : MonoBehaviour
     {
-        itemImage.sprite = itemSprite;
-        itemNameText.text = $"{itemName}";
-        sellText.text = $"Price: {price}";
-        itemIndex = index;
+        #region Variables
 
-        gameObject.SetActive(true);
-    }
+        [SerializeField] private Image itemImage;
+        [SerializeField] private TMP_Text itemNameText;
+        [SerializeField] private TMP_Text sellText;
+        [SerializeField] private Button sellButton;
+        [SerializeField] private Button backButton;
 
-    private void ConfirmedSell()
-    {
-        OnSellConfirmed?.Invoke(itemIndex);
-    }
+        private int itemIndex;
 
-    private void OnEnable()
-    {
-        sellButton.onClick.AddListener(ConfirmedSell);
-        backButton.onClick.AddListener(ClosePopup);
-    }
+        #endregion
 
-    private void OnDisable()
-    {
-        sellButton.onClick.RemoveListener(ConfirmedSell);
-        backButton.onClick.RemoveListener(ClosePopup);
-    }
+        #region Obj life cycle
 
-    public void ClosePopup()
-    {
-        gameObject.SetActive(false);
-        OnSellConfirmed -= GameManager.Instance.InventoryController.OnSellConfirmed;
+        private void OnEnable()
+        {
+            sellButton.onClick.AddListener(ConfirmedSell);
+            backButton.onClick.AddListener(ClosePopup);
+        }
+
+        private void OnDisable()
+        {
+            sellButton.onClick.RemoveListener(ConfirmedSell);
+            backButton.onClick.RemoveListener(ClosePopup);
+        }
+
+        #endregion
+
+        #region Events
+
+        public event Action<int> OnSellConfirmed;
+
+        #endregion
+
+        #region Functions
+
+        public void Show(Sprite itemSprite, string itemName, int quantity, int price, int index)
+        {
+            itemImage.sprite = itemSprite;
+            itemNameText.text = $"{itemName}";
+            sellText.text = $"Price: {price}";
+            itemIndex = index;
+
+            gameObject.SetActive(true);
+        }
+
+        private void ConfirmedSell()
+        {
+            OnSellConfirmed?.Invoke(itemIndex);
+        }
+
+        public void ClosePopup()
+        {
+            gameObject.SetActive(false);
+            OnSellConfirmed -= GameManager.Instance.InventoryController.OnSellConfirmed;
+        }
+
+        #endregion
     }
 }

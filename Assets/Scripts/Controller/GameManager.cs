@@ -1,62 +1,74 @@
-using System;
+using Model;
+using Player;
+using UI;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+namespace Controller
 {
-    [SerializeField] private ShopUI shopUI;
-    [SerializeField] private ShopSO shopData;
-    [SerializeField] private PlayerInventoryUI playerInventoryUI;
-    [SerializeField] private PlayerInventory playerInventory;
-    [SerializeField] private UIController uiController;
-    [SerializeField] private UiItemDescription itemDescription;
-
-    [SerializeField] private PurchasePopupUI purchasePopupUI;
-
-    [SerializeField] private int listCount = 7;
-    [SerializeField] private int shopMoney = 1000;
-    [SerializeField] private int inventoryMoney = 100;
-
-    private ShopController shopController;
-    private InventoryController inventoryController;
-    private InputManager inputManager;
-
-    private static GameManager instance;
-    public static GameManager Instance { get { return instance; } }
-
-    public ShopController ShopController { get { return shopController; } }
-
-    public PlayerInventory PlayerInventory { get { return playerInventory; } }
-
-    public InventoryController InventoryController { get { return inventoryController; } }
-
-    public UiItemDescription UiItemDescription { get { return itemDescription; } }
-
-    public PurchasePopupUI PurchasePopupUI {  get { return purchasePopupUI; } }
-
-    private void Awake()
+    public class GameManager : MonoBehaviour
     {
-        if (instance != null && instance != this)
-            Destroy(gameObject);
-        else
-            instance = this;
+        #region Variables
 
-        inventoryController = new InventoryController(playerInventoryUI, playerInventory, shopData, shopUI, inventoryMoney);
-        inputManager = new InputManager();
-    }
+        [SerializeField] private ShopUI shopUI;
+        [SerializeField] private ShopSO shopData;
+        [SerializeField] private PlayerInventoryUI playerInventoryUI;
+        [SerializeField] private PlayerInventory playerInventory;
+        [SerializeField] private UIController uiController;
+        [SerializeField] private UiItemDescription itemDescription;
+        [SerializeField] private PurchasePopupUI purchasePopupUI;
+        [SerializeField] private int listCount = 7;
+        [SerializeField] private int shopMoney = 1000;
+        [SerializeField] private int inventoryMoney = 100;
 
-    private void Start()
-    {
-        if (uiController == null)
-            Debug.LogError("UIController is null in GameManager!");
-        else
-            inputManager.OnInventoryTogglePressed += uiController.ToggleShop;
+        private ShopController shopController;
+        private InventoryController inventoryController;
+        private InputManager inputManager;
 
-        shopController = new ShopController(shopUI, shopData, uiController, playerInventory, listCount, shopMoney);
-    }
+        private static GameManager instance;
 
-    private void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.I))
-            inputManager.HandleInput();
+        #endregion
+
+        #region Properties
+
+        public static GameManager Instance { get { return instance; } }
+
+        public ShopController ShopController { get { return shopController; } }
+
+        public PlayerInventory PlayerInventory { get { return playerInventory; } }
+
+        public InventoryController InventoryController { get { return inventoryController; } }
+
+        #endregion
+
+        #region Obj life cycle
+
+        private void Awake()
+        {
+            if (instance != null && instance != this)
+                Destroy(gameObject);
+            else
+                instance = this;
+
+            inventoryController = new InventoryController(playerInventoryUI, playerInventory, shopData, shopUI, inventoryMoney);
+            inputManager = new InputManager();
+        }
+
+        private void Start()
+        {
+            if (uiController == null)
+                Debug.LogError("UIController is null in GameManager!");
+            else
+                inputManager.OnInventoryTogglePressed += uiController.ToggleShop;
+
+            shopController = new ShopController(shopUI, shopData, uiController, playerInventory, listCount, shopMoney);
+        }
+
+        private void Update()
+        {
+            if (Input.GetKeyUp(KeyCode.I))
+                inputManager.HandleInput();
+        }
+
+        #endregion
     }
 }

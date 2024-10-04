@@ -1,99 +1,115 @@
-using System;
+using Controller;
+using Model;
 using UnityEngine;
 
-public class ShopUI : BaseInventoryUI<ShopItemUI>
+namespace UI
 {
-    [SerializeField] private ShopItemUI itemPrefab;
-    [SerializeField] private ShopSO shopItemSO;
-
-    protected override void Awake()
+    public class ShopUI : BaseInventoryUI<ShopItemUI>
     {
-        base.Awake();
-        itemDescription.ResetDescription();
-    }
+        #region Variables
 
-    public void InitializeUIList(int listSize)
-    {
-        for (int i = 0; i < listSize; i++)
+        [SerializeField] private ShopItemUI itemPrefab;
+        [SerializeField] private ShopSO shopItemSO;
+
+        #endregion
+
+        #region Obj life cycle
+
+        protected override void Awake()
         {
-            ShopItemUI uiShopItem = Instantiate(itemPrefab, contentRectTransform);
-            uiShopItems.Add(uiShopItem);
-
-            uiShopItem.OnItemClicked += OnLeftClick;
-            uiShopItem.OnRightMouseButtonClicked += OnRightClick;
+            base.Awake();
+            itemDescription.ResetDescription();
         }
-    }
 
-    public void UpdateShopItemDescription(int itemIndex, Sprite itemImage, string name, string description, int price)
-    {
-        if (itemIndex < 0 || itemIndex >= uiShopItems.Count)
-            return;
+        private void OnEnable()
+        {
+            GameManager.Instance.PlayerInventory.OnInventoryItemAdded += AddItemToShopUI;
+        }
 
-        itemDescription.SetDescription(itemImage, name, description, price);
-    }
+        private void OnDisable()
+        {
+            GameManager.Instance.PlayerInventory.OnInventoryItemAdded -= AddItemToShopUI;
+        }
 
-    public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)
-    {
-        if (itemIndex < uiShopItems.Count)
-            uiShopItems[itemIndex].SetItem(itemImage, itemQuantity);
-    }
+        #endregion
 
-    protected override void OnLeftClick(ShopItemUI itemUI)
-    {
-        int index = uiShopItems.IndexOf(itemUI);
-        if (index == -1)
-            return;
+        #region
 
-        Items shopItem = shopItemSO.GetItemAt(index);
-        if (shopItem == null || shopItem.Item == null)
-            return;
+        public void InitializeUIList(int listSize)
+        {
+            for (int i = 0; i < listSize; i++)
+            {
+                ShopItemUI uiShopItem = Instantiate(itemPrefab, contentRectTransform);
+                uiShopItems.Add(uiShopItem);
 
-        InvokeDescriptionRequested(index);
+                uiShopItem.OnItemClicked += OnLeftClick;
+                uiShopItem.OnRightMouseButtonClicked += OnRightClick;
+            }
+        }
 
-        if (ActivePurchasePopupUIInstance.gameObject.activeInHierarchy)
-            ActivePurchasePopupUIInstance.Show(shopItem.Item.ItemImage, shopItem.Item.ItemName, shopItem.Quantity, shopItem.Item.Price, index);
-    }
+        public void UpdateShopItemDescription(int itemIndex, Sprite itemImage, string name, string description, int price)
+        {
+            if (itemIndex < 0 || itemIndex >= uiShopItems.Count)
+                return;
 
-    protected override void OnRightClick(ShopItemUI itemUI)
-    {
-        PurchasePopupUI popup = ActivePurchasePopupUIInstance;
+            itemDescription.SetDescription(itemImage, name, description, price);
+        }
 
-        if (popup.gameObject.activeInHierarchy)
-            return;
+        public void UpdateData(int itemIndex, Sprite itemImage, int itemQuantity)
+        {
+            if (itemIndex < uiShopItems.Count)
+                uiShopItems[itemIndex].SetItem(itemImage, itemQuantity);
+        }
 
-        int newIndex = uiShopItems.IndexOf(itemUI);
-        if (newIndex == -1)
-            return;
+        protected override void OnLeftClick(ShopItemUI itemUI)
+        {
+            int index = uiShopItems.IndexOf(itemUI);
+            if (index == -1)
+                return;
 
-        popup.gameObject.SetActive(true);
+            Items shopItem = shopItemSO.GetItemAt(index);
+            if (shopItem == null || shopItem.Item == null)
+                return;
 
-        Items newItem = shopItemSO.GetItemAt(newIndex);
-        if (newItem == null || newItem.Item == null)
-            return;
+            InvokeDescriptionRequested(index);
 
-        popup.Show(newItem.Item.ItemImage, newItem.Item.ItemName, newItem.Quantity, newItem.Item.Price, newIndex);
+            if (ActivePurchasePopupUIInstance.gameObject.activeInHierarchy)
+                ActivePurchasePopupUIInstance.Show(shopItem.Item.ItemImage, shopItem.Item.ItemName, shopItem.Quantity, shopItem.Item.Price, index);
+        }
 
-        popup.OnPurchaseConfirmed += GameManager.Instance.ShopController.OnPurchaseConfirmed;
-    }
+        protected override void OnRightClick(ShopItemUI itemUI)
+        {
+            PurchasePopupUI popup = ActivePurchasePopupUIInstance;
 
-    public void AddItemToShopUI(ItemSO item, int quantity)
-    {
-        Debug.Log("AddItemToShopUI");
-        // TODO
-    }
+            if (popup.gameObject.activeInHierarchy)
+                return;
 
-    public override void Clear()
-    {
-        base.Clear();
-    }
+            int newIndex = uiShopItems.IndexOf(itemUI);
+            if (newIndex == -1)
+                return;
 
-    private void OnEnable()
-    {
-        GameManager.Instance.PlayerInventory.OnInventoryItemAdded += AddItemToShopUI;
-    }
+            popup.gameObject.SetActive(true);
 
-    private void OnDisable()
-    {
-        GameManager.Instance.PlayerInventory.OnInventoryItemAdded -= AddItemToShopUI;
+            Items newItem = shopItemSO.GetItemAt(newIndex);
+            if (newItem == null || newItem.Item == null)
+                return;
+
+            popup.Show(newItem.Item.ItemImage, newItem.Item.ItemName, newItem.Quantity, newItem.Item.Price, newIndex);
+
+            popup.OnPurchaseConfirmed += GameManager.Instance.ShopController.OnPurchaseConfirmed;
+        }
+
+        public override void Clear()
+        {
+            base.Clear();
+        }
+
+        public void AddItemToShopUI(ItemSO item, int quantity)
+        {
+            Debug.Log("AddItemToShopUI");
+            // TODO
+        }
+
+        #endregion
     }
 }
