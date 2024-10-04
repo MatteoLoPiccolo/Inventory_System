@@ -34,7 +34,7 @@ public class InventoryItemUI : MonoBehaviour, IPointerClickHandler
 
     public void UpdateQuantity()
     {
-        Quantity ++;
+        Quantity++;
     }
 
     public void OnPointerClick(PointerEventData eventData)

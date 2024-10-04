@@ -12,6 +12,7 @@ public class PlayerInventory : MonoBehaviour
 
     public event Action<int> OnMoneyChanged;
     public event Action<ItemSO, int> OnInventoryItemAdded;
+    public event Action<ItemSO, int> OnInventoryItemRemove;
 
     public int InventoryMoney
     {
@@ -52,7 +53,6 @@ public class PlayerInventory : MonoBehaviour
         OnInventoryItemAdded?.Invoke(item, inventory[item]);
     }
 
-
     public void RemoveItem(ItemSO item, int quantity)
     {
         if (inventory.ContainsKey(item))
@@ -61,15 +61,12 @@ public class PlayerInventory : MonoBehaviour
             if (inventory[item] <= 0)
                 inventory.Remove(item);
 
-            OnInventoryItemAdded?.Invoke(item, inventory[item]);
-            UpdateUI();
+            OnInventoryItemRemove?.Invoke(item, inventory[item]);
         }
     }
 
     public void UpdateUI()
     {
-        playerInventoryUI.Clear();
-
         foreach (var item in inventory)
             playerInventoryUI.AddItemUI(item.Key, item.Value);
     }
@@ -96,11 +93,11 @@ public class PlayerInventory : MonoBehaviour
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwitchUI += shopUI.ClosePopup;
+        GameManager.Instance.OnSwitchUI += shopUI.ClosePurchasePopup;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwitchUI -= shopUI.ClosePopup;
+        GameManager.Instance.OnSwitchUI -= shopUI.ClosePurchasePopup;
     }
 }

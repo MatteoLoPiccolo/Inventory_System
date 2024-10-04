@@ -33,6 +33,8 @@ public class UIController : MonoBehaviour
         inventoryText.gameObject.SetActive(false);
 
         isShopOpen = true;
+
+        GameManager.Instance.InventoryController.GetInventoryUI().CloseSellPopup();
     }
 
     public void ShowPlayerInventory()
@@ -45,7 +47,7 @@ public class UIController : MonoBehaviour
 
         isShopOpen = false;
 
-        GameManager.Instance.ShopController.GetShopUI().ClosePopup();
+        GameManager.Instance.ShopController.GetShopUI().ClosePurchasePopup();
     }
 
     private void SetCanvasGroupVisibility(CanvasGroup canvasGroup, bool isVisible)

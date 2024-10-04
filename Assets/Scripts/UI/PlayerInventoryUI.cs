@@ -1,6 +1,4 @@
-using System;
 using System.Linq;
-using System.Reflection;
 using UnityEngine;
 
 public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
@@ -94,8 +92,8 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
 
         InvokeDescriptionRequested(index);
 
-        if (ActivePopupUIInstance.gameObject.activeInHierarchy)
-            ActivePopupUIInstance.Show(playerItem.Key.ItemImage, playerItem.Key.ItemName, playerItem.Value, playerItem.Key.Price, index);
+        if (activeSellPopupUIInstance.gameObject.activeInHierarchy)
+            ActiveSellPopupUIInstance.Show(playerItem.Key.ItemImage, playerItem.Key.ItemName, playerItem.Value, playerItem.Key.Price, index);
     }
 
     protected override void OnRightClick(InventoryItemUI itemUI)
@@ -106,19 +104,12 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
         if (index == -1)
             return;
 
-        PurchasePopupUI popup = ActivePopupUIInstance;
+        Debug.Log($"newIndex: {index}, Total items: {uiInventoryItems.Count}");
+
+        SellPopupUI popup = ActiveSellPopupUIInstance;
 
         if (popup.gameObject.activeInHierarchy)
-        {
-            var playerItems = playerInventory.GetInventoryItems();
-            var playerItem = playerItems.ElementAtOrDefault(index);
-
-            if (playerItem.Key == null || playerItem.Value <= 0)
-                return;
-
-            popup.Show(playerItem.Key.ItemImage, playerItem.Key.ItemName, playerItem.Value, playerItem.Key.Price, index);
             return;
-        }
 
         int newIndex = uiInventoryItems.IndexOf(itemUI);
         if (newIndex == -1)
@@ -127,12 +118,14 @@ public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
         popup.gameObject.SetActive(true);
         Debug.Log(popup.gameObject.activeInHierarchy);
 
-        //Items newItem = shopItemSO.GetItemAt(newIndex);
-        //if (newItem == null || newItem.Item == null)
-        //    return;
+        var playerItems = playerInventory.GetInventoryItems();
+        var playerItem = playerItems.ElementAtOrDefault(index);
 
-        //popup.Show(newItem.Item.ItemImage, newItem.Item.ItemName, newItem.Quantity, newItem.Item.Price, newIndex);
+        if (playerItem.Key == null || playerItem.Value <= 0)
+            return;
 
-        //popup.OnPurchaseConfirmed += GameManager.Instance.ShopController.OnPurchaseConfirmed;
+        popup.Show(playerItem.Key.ItemImage, playerItem.Key.ItemName, playerItem.Value, playerItem.Key.Price, index);
+
+        popup.OnSellConfirmed += GameManager.Instance.InventoryController.OnSellConfirmed;
     }
 }

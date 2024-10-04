@@ -23,7 +23,7 @@ public class SellPopupUI : MonoBehaviour
     public void Show(Sprite itemSprite, string itemName, int quantity, int price, int index)
     {
         itemImage.sprite = itemSprite;
-        itemNameText.text = $"{itemName} x{quantity}";
+        itemNameText.text = $"{itemName}";
         sellText.text = $"Price: {price}";
         itemIndex = index;
 
@@ -52,5 +52,6 @@ public class SellPopupUI : MonoBehaviour
     public void ClosePopup()
     {
         gameObject.SetActive(false);
+        OnSellConfirmed -= GameManager.Instance.InventoryController.OnSellConfirmed;
     }
 }

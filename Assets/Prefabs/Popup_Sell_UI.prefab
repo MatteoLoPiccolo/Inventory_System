@@ -529,7 +529,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Bread x1
+  m_text: Bread
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -663,7 +663,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Price: 3'
+  m_text: Price
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -988,7 +988,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemImage: {fileID: 4639483224637007942}
   itemNameText: {fileID: 7152010905184677213}
-  sellText: {fileID: 7937524079253664866}
+  sellText: {fileID: 1947048108121945622}
   sellButton: {fileID: 6084447090332078868}
   backButton: {fileID: 6988832352065743626}
   uIController: {fileID: 0}

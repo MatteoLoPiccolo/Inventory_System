@@ -1,5 +1,4 @@
 using System;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ShopController
@@ -13,7 +12,6 @@ public class ShopController
     private int shopMoney = 1000;
 
     public event Action<int> OnMoneyChanged;
-
 
     public int ShopMoney
     {

@@ -80,12 +80,32 @@ public class InventoryController
         playerInventoryUI.UpdateInventoryItemDescription(itemIndex, itemSO.ItemImage, itemSO.ItemName, itemSO.Description, itemSO.Price);
     }
 
-    public void SetMoney(int amount)
+    public void OnSellConfirmed(int itemIndex)
     {
-        if (ShopMoney >= amount)
+        var playerItems = playerInventory.GetInventoryItems();
+        var playerItem = playerItems.ElementAtOrDefault(itemIndex);
+
+        if (playerItem.Key == null || playerItem.Value <= 0)
         {
-            ShopMoney -= amount;
+            Debug.Log("Player item is empty, cannot proceed with sale.");
+            return;
         }
+
+        Debug.Log($"OnSellConfirmed called for item: {playerItem.Key.ItemName}, Quantity: {playerItem.Value}");
+
+        int sellQuantity = 1;
+
+        playerInventory.RemoveItem(playerItem.Key, sellQuantity);
+
+        int newPlayerMoney = playerInventory.GetMoney() + playerItem.Key.Price;
+        playerInventory.SetMoney(newPlayerMoney);
+
+        int newShopMoney = GameManager.Instance.ShopController.ShopMoney - playerItem.Key.Price;
+        GameManager.Instance.ShopController.SetMoney(newShopMoney);
+
+        playerInventoryUI.UpdateData(itemIndex, playerItem.Key, playerItem.Value - sellQuantity);
+
+        Debug.Log("Item sold and UI updated.");
     }
     
     public PlayerInventoryUI GetInventoryUI() => playerInventoryUI;

@@ -49,8 +49,8 @@ public class GameManager : MonoBehaviour
         inventoryController = new InventoryController(playerInventoryUI, playerInventory, shopData, shopUI, inventoryMoney);
         inputManager = new InputManager();
 
-        shopMoney = 1000;
-        inventoryMoney = 100;
+        //shopMoney = 1000;
+        //inventoryMoney = 100;
     }
 
     private void Start()

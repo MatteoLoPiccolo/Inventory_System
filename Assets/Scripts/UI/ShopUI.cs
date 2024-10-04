@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using UnityEngine;
 
 public class ShopUI : BaseInventoryUI<ShopItemUI>
@@ -54,27 +55,16 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
 
         InvokeDescriptionRequested(index);
 
-        if (ActivePopupUIInstance.gameObject.activeInHierarchy)
-            ActivePopupUIInstance.Show(shopItem.Item.ItemImage, shopItem.Item.ItemName, shopItem.Quantity, shopItem.Item.Price, index);
+        if (ActivePurchasePopupUIInstance.gameObject.activeInHierarchy)
+            ActivePurchasePopupUIInstance.Show(shopItem.Item.ItemImage, shopItem.Item.ItemName, shopItem.Quantity, shopItem.Item.Price, index);
     }
 
     protected override void OnRightClick(ShopItemUI itemUI)
     {
-        PurchasePopupUI popup = ActivePopupUIInstance;
+        PurchasePopupUI popup = ActivePurchasePopupUIInstance;
 
         if (popup.gameObject.activeInHierarchy)
-        {
-            int index = uiShopItems.IndexOf(itemUI);
-            if (index == -1) 
-                return;
-
-            Items shopItem = shopItemSO.GetItemAt(index);
-            if (shopItem == null || shopItem.Item == null)
-                return;
-
-            popup.Show(shopItem.Item.ItemImage, shopItem.Item.ItemName, shopItem.Quantity, shopItem.Item.Price, index);
             return;
-        }
 
         int newIndex = uiShopItems.IndexOf(itemUI);
         if (newIndex == -1)
@@ -88,8 +78,14 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
             return;
 
         popup.Show(newItem.Item.ItemImage, newItem.Item.ItemName, newItem.Quantity, newItem.Item.Price, newIndex);
-        
+
         popup.OnPurchaseConfirmed += GameManager.Instance.ShopController.OnPurchaseConfirmed;
+    }
+
+    private void AddItemToShopUI(ItemSO item, int quantity)
+    {
+        Debug.Log("AddItemToShopUI");
+        // TODO
     }
 
     public override void Clear()
@@ -99,11 +95,13 @@ public class ShopUI : BaseInventoryUI<ShopItemUI>
 
     private void OnEnable()
     {
-        GameManager.Instance.OnSwitchUI += ClosePopup;
+        GameManager.Instance.OnSwitchUI += ClosePurchasePopup;
+        GameManager.Instance.PlayerInventory.OnInventoryItemAdded += AddItemToShopUI;
     }
 
     private void OnDisable()
     {
-        GameManager.Instance.OnSwitchUI -= ClosePopup;
+        GameManager.Instance.OnSwitchUI -= ClosePurchasePopup;
+        GameManager.Instance.PlayerInventory.OnInventoryItemAdded -= AddItemToShopUI;
     }
 }
