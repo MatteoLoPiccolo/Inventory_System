@@ -13,13 +13,13 @@ MonoBehaviour:
   m_Name: ShopData
   m_EditorClassIdentifier: 
   shopItems:
-  - quantity: 3
+  - quantity: 5
     item: {fileID: 11400000, guid: 24c9763f3c9470b4b84efa79fa1fdfc4, type: 2}
-  - quantity: 1
+  - quantity: 3
     item: {fileID: 11400000, guid: 9dbb3425ba366fd43bac575154fe31bb, type: 2}
-  - quantity: 5
+  - quantity: 9
     item: {fileID: 11400000, guid: 145e933aee74e2547a6f7a7bd9a9586a, type: 2}
-  - quantity: 5
+  - quantity: 9
     item: {fileID: 11400000, guid: b7f5081919010284e9a786393adc75cb, type: 2}
   - quantity: 0
     item: {fileID: 0}

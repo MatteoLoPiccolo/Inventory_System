@@ -1,38 +1,67 @@
+using Model;
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class InventoryItemUI : MonoBehaviour, IPointerClickHandler
+namespace UI
 {
-    [SerializeField] private Image itemImage;
-    [SerializeField] private TMP_Text itemQuantityText;
-
-    public event Action<InventoryItemUI> OnItemClicked;
-    public event Action<InventoryItemUI> OnRightMouseButtonClicked;
-
-    public Image ItemImage
+    public class InventoryItemUI : MonoBehaviour, IPointerClickHandler
     {
-        get { return itemImage; }
-    }
+        #region Variables
 
-    public void SetItem(Sprite spriteImage, int quantity)
-    {
-        if (itemImage != null)
+        [SerializeField] private Image itemImage;
+        [SerializeField] private TMP_Text itemQuantityText;
+
+        #endregion
+
+        #region Properties
+
+        public ItemSO Item { get; private set; }
+
+        public int Quantity
         {
-            itemImage.gameObject.SetActive(true);
-            itemImage.sprite = spriteImage;
+            get => int.Parse(itemQuantityText.text);
+            set => itemQuantityText.text = value.ToString();
         }
-        if (itemQuantityText != null)
-            itemQuantityText.text = quantity.ToString();
-    }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (eventData.button == PointerEventData.InputButton.Right)
-            OnRightMouseButtonClicked?.Invoke(this);
-        else
-            OnItemClicked?.Invoke(this);
+        #endregion
+
+        #region Events
+
+        public event Action<InventoryItemUI> OnItemClicked;
+        public event Action<InventoryItemUI> OnRightMouseButtonClicked;
+
+        #endregion
+
+        #region Functions
+
+        public void SetItem(ItemSO item, int quantity)
+        {
+            if (item != null)
+            {
+                Item = item;
+                itemImage.sprite = item.ItemImage;
+                itemImage.gameObject.SetActive(true);
+            }
+
+            Quantity = quantity;
+        }
+
+        public void UpdateQuantity()
+        {
+            Quantity++;
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (eventData.button == PointerEventData.InputButton.Right)
+                OnRightMouseButtonClicked?.Invoke(this);
+            else
+                OnItemClicked?.Invoke(this);
+        }
+
+        #endregion
     }
 }

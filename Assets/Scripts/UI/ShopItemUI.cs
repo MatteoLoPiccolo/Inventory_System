@@ -4,44 +4,59 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-public class ShopItemUI : MonoBehaviour, IPointerClickHandler
+namespace UI
 {
-    [SerializeField] private Image itemImage;
-    [SerializeField] private TMP_Text itemQuantityText;
-
-    public event Action<ShopItemUI> OnItemClicked;
-    public event Action<ShopItemUI> OnRightMouseButtonClicked;
-
-    private void Awake()
+    public class ShopItemUI : MonoBehaviour, IPointerClickHandler
     {
-        ResetItem();
-    }
+        #region Variables
 
-    private void ResetItem()
-    {
-        if (itemImage != null)
-            itemImage.gameObject.SetActive(false);
+        [SerializeField] private Image itemImage;
+        [SerializeField] private TMP_Text itemQuantityText;
 
-        if (itemQuantityText != null)
-            itemQuantityText.text = string.Empty;
-    }
+        public event Action<ShopItemUI> OnItemClicked;
+        public event Action<ShopItemUI> OnRightMouseButtonClicked;
 
-    public void SetItem(Sprite spriteImage, int quantity)
-    {
-        if (itemImage != null)
+        #endregion
+
+        #region Obj life cycle
+
+        private void Awake()
         {
-            itemImage.gameObject.SetActive(true);
-            itemImage.sprite = spriteImage;
+            ResetItem();
         }
-        if (itemQuantityText != null)
-            itemQuantityText.text = quantity.ToString();
-    }
 
-    public void OnPointerClick(PointerEventData eventData)
-    {
-        if (eventData.button == PointerEventData.InputButton.Right)
-            OnRightMouseButtonClicked?.Invoke(this);
-        else
-            OnItemClicked?.Invoke(this);
+        #endregion
+
+        #region Functions
+
+        private void ResetItem()
+        {
+            if (itemImage != null)
+                itemImage.gameObject.SetActive(false);
+
+            if (itemQuantityText != null)
+                itemQuantityText.text = string.Empty;
+        }
+
+        public void SetItem(Sprite spriteImage, int quantity)
+        {
+            if (itemImage != null)
+            {
+                itemImage.gameObject.SetActive(true);
+                itemImage.sprite = spriteImage;
+            }
+            if (itemQuantityText != null)
+                itemQuantityText.text = quantity.ToString();
+        }
+
+        public void OnPointerClick(PointerEventData eventData)
+        {
+            if (eventData.button == PointerEventData.InputButton.Right)
+                OnRightMouseButtonClicked?.Invoke(this);
+            else
+                OnItemClicked?.Invoke(this);
+        }
+
+        #endregion
     }
 }

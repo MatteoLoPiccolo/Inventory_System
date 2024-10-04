@@ -1,15 +1,16 @@
 using System;
 using UnityEngine;
 
-public class InputManager
+namespace Controller
 {
-    public event Action OnInventoryTogglePressed;
-
-    public void HandleInput()
+    public class InputManager
     {
-        if (Input.GetKeyUp(KeyCode.I))
+        public event Action OnInventoryTogglePressed;
+
+        public void HandleInput()
         {
-            OnInventoryTogglePressed?.Invoke();
+            if (Input.GetKeyUp(KeyCode.I))
+                OnInventoryTogglePressed?.Invoke();
         }
     }
 }

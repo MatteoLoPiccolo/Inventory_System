@@ -6,14 +6,14 @@ using UnityEngine.UI;
 
 namespace UI
 {
-    public class PurchasePopupUI : MonoBehaviour
+    public class SellPopupUI : MonoBehaviour
     {
         #region Variables
 
         [SerializeField] private Image itemImage;
         [SerializeField] private TMP_Text itemNameText;
-        [SerializeField] private TMP_Text priceText;
-        [SerializeField] private Button buyButton;
+        [SerializeField] private TMP_Text sellText;
+        [SerializeField] private Button sellButton;
         [SerializeField] private Button backButton;
 
         private int itemIndex;
@@ -24,13 +24,13 @@ namespace UI
 
         private void OnEnable()
         {
-            buyButton.onClick.AddListener(OnConfirmPurchase);
+            sellButton.onClick.AddListener(ConfirmedSell);
             backButton.onClick.AddListener(ClosePopup);
         }
 
         private void OnDisable()
         {
-            buyButton.onClick.RemoveListener(OnConfirmPurchase);
+            sellButton.onClick.RemoveListener(ConfirmedSell);
             backButton.onClick.RemoveListener(ClosePopup);
         }
 
@@ -38,7 +38,7 @@ namespace UI
 
         #region Events
 
-        public event Action<int> OnPurchaseConfirmed;
+        public event Action<int> OnSellConfirmed;
 
         #endregion
 
@@ -48,21 +48,21 @@ namespace UI
         {
             itemImage.sprite = itemSprite;
             itemNameText.text = $"{itemName}";
-            priceText.text = $"Price: {price}";
+            sellText.text = $"Price: {price}";
             itemIndex = index;
 
             gameObject.SetActive(true);
         }
 
-        private void OnConfirmPurchase()
+        private void ConfirmedSell()
         {
-            OnPurchaseConfirmed?.Invoke(itemIndex);
+            OnSellConfirmed?.Invoke(itemIndex);
         }
 
         public void ClosePopup()
         {
             gameObject.SetActive(false);
-            OnPurchaseConfirmed -= GameManager.Instance.ShopController.OnPurchaseConfirmed;
+            OnSellConfirmed -= GameManager.Instance.InventoryController.OnSellConfirmed;
         }
 
         #endregion
