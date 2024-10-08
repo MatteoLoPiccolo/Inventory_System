@@ -1,15 +1,13 @@
-using Model;
+using InventorySystemModel;
 using System;
 using System.Collections.Generic;
-using UI;
+using InventorySystemUI;
 using UnityEngine;
 
-namespace Player
+namespace InventorySystemPlayer
 {
     public class PlayerInventory : MonoBehaviour
     {
-        #region Variables
-
         [SerializeField] private PlayerInventoryUI playerInventoryUI;
         [SerializeField] private ShopUI shopUI;
         [SerializeField] private int inventoryMoney;
@@ -19,10 +17,6 @@ namespace Player
         public event Action<int> OnMoneyChanged;
         public event Action<ItemSO, int> OnInventoryItemAdded;
         public event Action<ItemSO, int> OnInventoryItemRemove;
-
-        #endregion
-
-        #region Properties
 
         public int InventoryMoney
         {
@@ -34,19 +28,12 @@ namespace Player
             }
         }
 
-        #endregion
-
-        #region Obj life cycle
-
         private void Awake()
         {
             inventoryMoney = 100;
             ResetInventory();
         }
 
-        #endregion
-
-        #region Functions
 
         private void ResetInventory()
         {
@@ -102,7 +89,5 @@ namespace Player
         {
             InventoryMoney = newAmount;
         }
-
-        #endregion
     }
 }

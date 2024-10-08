@@ -1,13 +1,11 @@
-using Player;
+using InventorySystemPlayer;
 using TMPro;
 using UnityEngine;
 
-namespace Controller
+namespace InventorySystemController
 {
     public class UIController : MonoBehaviour
     {
-        #region Variables
-
         [SerializeField] private CanvasGroup shopCanvasGroup;
         [SerializeField] private CanvasGroup playerInventoryCanvasGroup;
         [SerializeField] private TMP_Text shopText;
@@ -18,10 +16,6 @@ namespace Controller
 
         private bool isShopOpen = false;
 
-        #endregion
-
-        #region Obj life cycle
-
         private void Start()
         {
             GameManager.Instance.PlayerInventory.OnMoneyChanged += UpdatePlayerMoneyUI;
@@ -30,10 +24,6 @@ namespace Controller
             ShowPlayerInventory();
             SetTextMoneyUI();
         }
-
-        #endregion
-
-        #region Functions
 
         public void ShowShop()
         {
@@ -79,26 +69,24 @@ namespace Controller
         public void SetTextMoneyUI()
         {
             if (playerMoneyText)
-                playerMoneyText.text = $"Player $: {GameManager.Instance.PlayerInventory.InventoryMoney}";
+                playerMoneyText.text = $"InventorySystemPlayer $: {GameManager.Instance.PlayerInventory.InventoryMoney}";
             else
                 Debug.LogError("playerMoneyText is null");
 
             if (shopMoneyText)
-                shopMoneyText.text = $"Shop $ : {GameManager.Instance.ShopController.ShopMoney}";
+                shopMoneyText.text = $"Shop $ : {GameManager.Instance.ShopController.GetMoney()}";
             else
                 Debug.LogError("shopMoneyText is null");
         }
 
         public void UpdatePlayerMoneyUI(int newMoney)
         {
-            playerMoneyText.text = $"Player $: {newMoney}";
+            playerMoneyText.text = $"InventorySystemPlayer $: {newMoney}";
         }
 
         public void UpdateShopMoneyUI(int newMoney)
         {
             shopMoneyText.text = $"Shop $ : {newMoney}";
         }
-
-        #endregion
     }
 }

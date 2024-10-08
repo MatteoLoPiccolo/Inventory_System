@@ -1,22 +1,16 @@
-using Model;
+using InventorySystemModel;
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace UI
+namespace InventorySystemUI
 {
     public class InventoryItemUI : MonoBehaviour, IPointerClickHandler
     {
-        #region Variables
-
         [SerializeField] private Image itemImage;
         [SerializeField] private TMP_Text itemQuantityText;
-
-        #endregion
-
-        #region Properties
 
         public ItemSO Item { get; private set; }
 
@@ -26,16 +20,8 @@ namespace UI
             set => itemQuantityText.text = value.ToString();
         }
 
-        #endregion
-
-        #region Events
-
         public event Action<InventoryItemUI> OnItemClicked;
         public event Action<InventoryItemUI> OnRightMouseButtonClicked;
-
-        #endregion
-
-        #region Functions
 
         public void SetItem(ItemSO item, int quantity)
         {
@@ -61,7 +47,5 @@ namespace UI
             else
                 OnItemClicked?.Invoke(this);
         }
-
-        #endregion
     }
 }

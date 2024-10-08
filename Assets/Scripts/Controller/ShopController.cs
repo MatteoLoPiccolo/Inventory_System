@@ -1,15 +1,13 @@
-using Model;
-using Player;
+using InventorySystemModel;
+using InventorySystemPlayer;
 using System;
-using UI;
+using InventorySystemUI;
 using UnityEngine;
 
-namespace Controller
+namespace InventorySystemController
 {
     public class ShopController
     {
-        #region Variables
-
         private ShopUI shopUI;
         private ShopSO shopData;
         private UIController uiController;
@@ -19,20 +17,15 @@ namespace Controller
 
         public ShopUI GetShopUI() => shopUI;
 
-        public event Action<int> OnMoneyChanged;
+        public int GetMoney() => shopMoney;
 
-        public int ShopMoney
+        public void SetMoney(int amount)
         {
-            get => shopMoney;
-
-            private set
-            {
-                shopMoney = value;
-                OnMoneyChanged?.Invoke(shopMoney);
-            }
+            shopMoney = amount;
+            OnMoneyChanged?.Invoke(shopMoney);
         }
 
-        #endregion
+        public event Action<int> OnMoneyChanged;
 
         public ShopController(ShopUI shopUI, ShopSO shopData, UIController uiManager, PlayerInventory playerInventory, int shopItemsListSize = 7, int initialMoney = 1000)
         {
@@ -45,8 +38,6 @@ namespace Controller
 
             InitializeShopController();
         }
-
-        #region Initialize
 
         private void InitializeShopController()
         {
@@ -64,10 +55,6 @@ namespace Controller
                 shopUI.UpdateData(item.Key, item.Value.Item.ItemImage, item.Value.Quantity);
             }
         }
-
-        #endregion
-
-        #region Events
 
         private void OnShopDescriptionRequested(int itemIndex)
         {
@@ -96,7 +83,7 @@ namespace Controller
                 playerInventory.AddItem(shopItem.Item, buyQuantity);
 
                 int newPlayerMoney = playerInventory.GetMoney() - shopItem.Item.Price;
-                int newShopMoney = GameManager.Instance.ShopController.ShopMoney + shopItem.Item.Price;
+                int newShopMoney = GameManager.Instance.ShopController.GetMoney() + shopItem.Item.Price;
 
                 playerInventory.SetMoney(newPlayerMoney);
                 GameManager.Instance.ShopController.SetMoney(newShopMoney);
@@ -116,16 +103,5 @@ namespace Controller
                 Debug.Log("Not enough money!");
             }
         }
-
-        #endregion
-
-        #region Functions
-
-        public void SetMoney(int amount)
-        {
-            ShopMoney = amount;
-        }
-
-        #endregion
     }
 }

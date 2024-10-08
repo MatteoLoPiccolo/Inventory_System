@@ -2,29 +2,19 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace InventorySystemUI
 {
     public class UiItemDescription : MonoBehaviour
     {
-        #region Variables
-
         [SerializeField] private Image itemImage;
         [SerializeField] private TMP_Text titleText;
         [SerializeField] private TMP_Text descriptionText;
         [SerializeField] private TMP_Text priceText;
 
-        #endregion
-
-        #region Obj life cycle
-
         private void Awake()
         {
             ResetDescription();
         }
-
-        #endregion
-
-        #region Functions
 
         public void ResetDescription()
         {
@@ -42,7 +32,5 @@ namespace UI
             descriptionText.text = itemDescription;
             priceText.text = $"Price: {itemPrice}";
         }
-
-        #endregion
     }
 }

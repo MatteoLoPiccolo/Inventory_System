@@ -1,15 +1,13 @@
-using Controller;
+using InventorySystemController;
 using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-namespace UI
+namespace InventorySystemUI
 {
     public abstract class BaseInventoryUI<T> : MonoBehaviour where T : MonoBehaviour
     {
-        #region Variables
-
         [SerializeField] protected PurchasePopupUI activePurchasePopupUIInstance;
         [SerializeField] protected SellPopupUI activeSellPopupUIInstance;
         [SerializeField] protected UiItemDescription itemDescription;
@@ -20,10 +18,6 @@ namespace UI
         protected List<T> uiInventoryItems = new List<T>();
 
         public event Action<int> OnDescriptionRequested;
-
-        #endregion
-
-        #region Properties
 
         public PurchasePopupUI ActivePurchasePopupUIInstance
         {
@@ -53,10 +47,6 @@ namespace UI
             }
         }
 
-        #endregion
-
-        #region Obj life cycle
-
         protected virtual void Awake()
         {
             if (activePurchasePopupUIInstance == null)
@@ -71,10 +61,6 @@ namespace UI
                 return;
             }
         }
-
-        #endregion
-
-        #region Functions
 
         protected abstract void OnLeftClick(T itemUI);
 
@@ -105,7 +91,5 @@ namespace UI
         {
             OnDescriptionRequested?.Invoke(index);
         }
-
-        #endregion
     }
 }

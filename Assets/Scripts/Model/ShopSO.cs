@@ -2,18 +2,12 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace Model
+namespace InventorySystemModel
 {
     [CreateAssetMenu(fileName = "ShopList", menuName = "ScriptableObjects/ShopSOList")]
     public class ShopSO : ScriptableObject
     {
-        #region Variables
-
         [SerializeField] private List<Items> shopItems;
-
-        #endregion
-
-        #region Functions
 
         public void Initialize(int size)
         {
@@ -42,33 +36,21 @@ namespace Model
 
             return shopItems[itemIndex];
         }
-
-        #endregion
     }
 
     [Serializable]
     public class Items
     {
-        #region Variables
-
         [SerializeField] private int quantity;
         [SerializeField] private ItemSO item;
 
         public event Action<int> OnQuantityChanged;
-
-        #endregion
-
-        #region Properties
 
         public int Quantity => quantity;
 
         public ItemSO Item => item;
 
         public bool IsEmpty => Item == null;
-
-        #endregion
-
-        #region Functions
 
         public Items(ItemSO item, int quantity)
         {
@@ -83,7 +65,5 @@ namespace Model
         }
 
         public static Items GetEmptyItem() => new(null, 0);
-
-        #endregion
     }
 }

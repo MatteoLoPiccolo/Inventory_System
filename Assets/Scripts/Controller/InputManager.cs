@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace Controller
+namespace InventorySystemController
 {
     public class InputManager
     {

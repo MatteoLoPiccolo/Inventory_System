@@ -1,31 +1,21 @@
-using Controller;
-using Model;
-using Player;
+using InventorySystemController;
+using InventorySystemModel;
+using InventorySystemPlayer;
 using System.Linq;
 using UnityEngine;
 
-namespace UI
+namespace InventorySystemUI
 {
     public class PlayerInventoryUI : BaseInventoryUI<InventoryItemUI>
     {
-        #region Variables
-
         [SerializeField] private PlayerInventory playerInventory;
         [SerializeField] private InventoryItemUI itemPrefab;
-
-        #endregion
-
-        #region Obj life cycle
 
         private void Start()
         {
             playerInventory.OnInventoryItemAdded += AddItemUI;
             UpdateInventoryUI();
         }
-
-        #endregion
-
-        #region Functions
 
         private void UpdateInventoryUI()
         {
@@ -128,7 +118,5 @@ namespace UI
 
             popup.OnSellConfirmed += GameManager.Instance.InventoryController.OnSellConfirmed;
         }
-
-        #endregion
     }
 }

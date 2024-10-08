@@ -1,16 +1,14 @@
-using Model;
-using Player;
+using InventorySystemModel;
+using InventorySystemPlayer;
 using System;
 using System.Linq;
-using UI;
+using InventorySystemUI;
 using UnityEngine;
 
-namespace Controller
+namespace InventorySystemController
 {
     public class InventoryController
     {
-        #region Variables
-
         private PlayerInventoryUI playerInventoryUI;
         private PlayerInventory playerInventory;
         private ShopSO shopData;
@@ -33,8 +31,6 @@ namespace Controller
             }
         }
 
-        #endregion
-
         public InventoryController(PlayerInventoryUI playerInventoryUI, PlayerInventory playerInventory, ShopSO shopData, ShopUI shopUI, int initialMoney = 100)
         {
             this.playerInventoryUI = playerInventoryUI;
@@ -45,8 +41,6 @@ namespace Controller
 
             InitializeInventoryController();
         }
-
-        #region Initialization
 
         private void InitializeInventoryController()
         {
@@ -69,10 +63,6 @@ namespace Controller
                 playerInventoryUI.UpdateData(i, itemSO, quantity);
             }
         }
-
-        #endregion
-
-        #region Events
 
         private void OnInventoryDescriptionRequested(int itemIndex)
         {
@@ -101,7 +91,7 @@ namespace Controller
 
             if (playerItem.Key == null || playerItem.Value <= 0)
             {
-                Debug.Log("Player item is empty, cannot proceed with sale.");
+                Debug.Log("InventorySystemPlayer item is empty, cannot proceed with sale.");
                 return;
             }
 
@@ -113,12 +103,10 @@ namespace Controller
             int newPlayerMoney = playerInventory.GetMoney() + playerItem.Key.Price;
             playerInventory.SetMoney(newPlayerMoney);
 
-            int newShopMoney = GameManager.Instance.ShopController.ShopMoney - playerItem.Key.Price;
+            int newShopMoney = GameManager.Instance.ShopController.GetMoney() - playerItem.Key.Price;
             GameManager.Instance.ShopController.SetMoney(newShopMoney);
 
             playerInventoryUI.UpdateData(itemIndex, playerItem.Key, playerItem.Value - sellQuantity);
         }
-
-        #endregion
     }
 }

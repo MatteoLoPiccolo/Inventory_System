@@ -1,15 +1,13 @@
-using Controller;
+using InventorySystemController;
 using System;
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-namespace UI
+namespace InventorySystemUI
 {
     public class PurchasePopupUI : MonoBehaviour
     {
-        #region Variables
-
         [SerializeField] private Image itemImage;
         [SerializeField] private TMP_Text itemNameText;
         [SerializeField] private TMP_Text priceText;
@@ -17,10 +15,6 @@ namespace UI
         [SerializeField] private Button backButton;
 
         private int itemIndex;
-
-        #endregion
-
-        #region Obj life cycle
 
         private void OnEnable()
         {
@@ -34,15 +28,7 @@ namespace UI
             backButton.onClick.RemoveListener(ClosePopup);
         }
 
-        #endregion
-
-        #region Events
-
         public event Action<int> OnPurchaseConfirmed;
-
-        #endregion
-
-        #region Functions
 
         public void Show(Sprite itemSprite, string itemName, int quantity, int price, int index)
         {
@@ -64,7 +50,5 @@ namespace UI
             gameObject.SetActive(false);
             OnPurchaseConfirmed -= GameManager.Instance.ShopController.OnPurchaseConfirmed;
         }
-
-        #endregion
     }
 }

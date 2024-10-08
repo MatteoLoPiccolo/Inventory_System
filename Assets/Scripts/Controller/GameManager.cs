@@ -1,14 +1,12 @@
-using Model;
-using Player;
-using UI;
+using InventorySystemModel;
+using InventorySystemPlayer;
+using InventorySystemUI;
 using UnityEngine;
 
-namespace Controller
+namespace InventorySystemController
 {
     public class GameManager : MonoBehaviour
     {
-        #region Variables
-
         [SerializeField] private ShopUI shopUI;
         [SerializeField] private ShopSO shopData;
         [SerializeField] private PlayerInventoryUI playerInventoryUI;
@@ -26,10 +24,6 @@ namespace Controller
 
         private static GameManager instance;
 
-        #endregion
-
-        #region Properties
-
         public static GameManager Instance { get { return instance; } }
 
         public ShopController ShopController { get { return shopController; } }
@@ -37,10 +31,6 @@ namespace Controller
         public PlayerInventory PlayerInventory { get { return playerInventory; } }
 
         public InventoryController InventoryController { get { return inventoryController; } }
-
-        #endregion
-
-        #region Obj life cycle
 
         private void Awake()
         {
@@ -68,7 +58,5 @@ namespace Controller
             if (Input.GetKeyUp(KeyCode.I))
                 inputManager.HandleInput();
         }
-
-        #endregion
     }
 }

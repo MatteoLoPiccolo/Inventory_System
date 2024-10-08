@@ -1,19 +1,13 @@
-using Controller;
-using Model;
+using InventorySystemController;
+using InventorySystemModel;
 using UnityEngine;
 
-namespace UI
+namespace InventorySystemUI
 {
     public class ShopUI : BaseInventoryUI<ShopItemUI>
     {
-        #region Variables
-
         [SerializeField] private ShopItemUI itemPrefab;
         [SerializeField] private ShopSO shopItemSO;
-
-        #endregion
-
-        #region Obj life cycle
 
         protected override void Awake()
         {
@@ -30,10 +24,6 @@ namespace UI
         {
             GameManager.Instance.PlayerInventory.OnInventoryItemAdded -= AddItemToShopUI;
         }
-
-        #endregion
-
-        #region
 
         public void InitializeUIList(int listSize)
         {
@@ -109,7 +99,5 @@ namespace UI
             Debug.Log("AddItemToShopUI");
             // TODO
         }
-
-        #endregion
     }
 }

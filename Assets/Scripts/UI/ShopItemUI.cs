@@ -4,30 +4,20 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
-namespace UI
+namespace InventorySystemUI
 {
     public class ShopItemUI : MonoBehaviour, IPointerClickHandler
     {
-        #region Variables
-
         [SerializeField] private Image itemImage;
         [SerializeField] private TMP_Text itemQuantityText;
 
         public event Action<ShopItemUI> OnItemClicked;
         public event Action<ShopItemUI> OnRightMouseButtonClicked;
 
-        #endregion
-
-        #region Obj life cycle
-
         private void Awake()
         {
             ResetItem();
         }
-
-        #endregion
-
-        #region Functions
 
         private void ResetItem()
         {
@@ -56,7 +46,5 @@ namespace UI
             else
                 OnItemClicked?.Invoke(this);
         }
-
-        #endregion
     }
 }
