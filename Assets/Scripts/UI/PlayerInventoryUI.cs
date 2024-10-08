@@ -88,7 +88,7 @@ namespace InventorySystemUI
             InvokeDescriptionRequested(index);
 
             if (activeSellPopupUIInstance.gameObject.activeInHierarchy)
-                ActiveSellPopupUIInstance.Show(playerItem.Key.ItemImage, playerItem.Key.ItemName, playerItem.Value, playerItem.Key.Price, index);
+                ActiveSellPopupUIInstance.Show(playerItem.Key.ItemImage, playerItem.Key.ItemName, playerItem.Key.Price, index);
         }
 
         protected override void OnRightClick(InventoryItemUI itemUI)
@@ -114,7 +114,7 @@ namespace InventorySystemUI
             if (playerItem.Key == null || playerItem.Value <= 0)
                 return;
 
-            popup.Show(playerItem.Key.ItemImage, playerItem.Key.ItemName, playerItem.Value, playerItem.Key.Price, index);
+            popup.Show(playerItem.Key.ItemImage, playerItem.Key.ItemName, playerItem.Key.Price, index);
 
             popup.OnSellConfirmed += GameManager.Instance.InventoryController.OnSellConfirmed;
         }

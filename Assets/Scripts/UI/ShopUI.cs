@@ -64,7 +64,7 @@ namespace InventorySystemUI
             InvokeDescriptionRequested(index);
 
             if (ActivePurchasePopupUIInstance.gameObject.activeInHierarchy)
-                ActivePurchasePopupUIInstance.Show(shopItem.Item.ItemImage, shopItem.Item.ItemName, shopItem.Quantity, shopItem.Item.Price, index);
+                ActivePurchasePopupUIInstance.Show(shopItem.Item.ItemImage, shopItem.Item.ItemName, shopItem.Item.Price, index);
         }
 
         protected override void OnRightClick(ShopItemUI itemUI)
@@ -84,7 +84,7 @@ namespace InventorySystemUI
             if (newItem == null || newItem.Item == null)
                 return;
 
-            popup.Show(newItem.Item.ItemImage, newItem.Item.ItemName, newItem.Quantity, newItem.Item.Price, newIndex);
+            popup.Show(newItem.Item.ItemImage, newItem.Item.ItemName, newItem.Item.Price, newIndex);
 
             popup.OnPurchaseConfirmed += GameManager.Instance.ShopController.OnPurchaseConfirmed;
         }
