@@ -48,7 +48,7 @@ namespace InventorySystemController
 
             isShopOpen = false;
 
-            GameManager.Instance.ShopController.GetShopUI().ClosePurchasePopup();
+            GameManager.Instance.ShopUI.ClosePurchasePopup();
         }
 
         private void SetCanvasGroupVisibility(CanvasGroup canvasGroup, bool isVisible)
@@ -69,7 +69,7 @@ namespace InventorySystemController
         public void SetTextMoneyUI()
         {
             if (playerMoneyText)
-                playerMoneyText.text = $"InventorySystemPlayer $: {GameManager.Instance.PlayerInventory.InventoryMoney}";
+                playerMoneyText.text = $"Player $: {GameManager.Instance.PlayerInventory.GetMoney()}";
             else
                 Debug.LogError("playerMoneyText is null");
 
@@ -81,7 +81,7 @@ namespace InventorySystemController
 
         public void UpdatePlayerMoneyUI(int newMoney)
         {
-            playerMoneyText.text = $"InventorySystemPlayer $: {newMoney}";
+            playerMoneyText.text = $"Player $: {newMoney}";
         }
 
         public void UpdateShopMoneyUI(int newMoney)

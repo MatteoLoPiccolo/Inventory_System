@@ -1,43 +1,27 @@
 using InventorySystemModel;
 using InventorySystemPlayer;
-using System;
 using System.Linq;
 using InventorySystemUI;
 using UnityEngine;
 
 namespace InventorySystemController
 {
-    public class InventoryController
+    public class InventoryController : BaseInventoryController
     {
         private PlayerInventoryUI playerInventoryUI;
         private PlayerInventory playerInventory;
         private ShopSO shopData;
         private ShopUI shopUI;
         private int inventoryItemsListSize;
-        private int inventoryMoney;
-
-        public event Action<int> OnMoneyChanged;
 
         public PlayerInventoryUI GetInventoryUI() => playerInventoryUI;
 
-        public int ShopMoney
-        {
-            get => inventoryMoney;
-
-            private set
-            {
-                inventoryMoney = value;
-                OnMoneyChanged?.Invoke(inventoryMoney);
-            }
-        }
-
-        public InventoryController(PlayerInventoryUI playerInventoryUI, PlayerInventory playerInventory, ShopSO shopData, ShopUI shopUI, int initialMoney = 100)
+        public InventoryController(PlayerInventoryUI playerInventoryUI, PlayerInventory playerInventory, ShopSO shopData, ShopUI shopUI)
         {
             this.playerInventoryUI = playerInventoryUI;
             this.playerInventory = playerInventory;
             this.shopData = shopData;
             this.shopUI = shopUI;
-            inventoryMoney = initialMoney;
 
             InitializeInventoryController();
         }
@@ -48,9 +32,9 @@ namespace InventorySystemController
             SetUpUI();
         }
 
-        private void SetUpUI()
+        protected override void SetUpUI()
         {
-            playerInventoryUI.OnDescriptionRequested += OnInventoryDescriptionRequested;
+            playerInventoryUI.OnDescriptionRequested += OnDescriptionRequested;
 
             var inventoryItems = playerInventory.GetInventoryItems().ToList();
 
@@ -64,7 +48,7 @@ namespace InventorySystemController
             }
         }
 
-        private void OnInventoryDescriptionRequested(int itemIndex)
+        protected override void OnDescriptionRequested(int itemIndex)
         {
             var inventoryItems = playerInventory.GetInventoryItems().ToList();
 

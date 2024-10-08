@@ -1,40 +1,25 @@
 using InventorySystemModel;
 using InventorySystemPlayer;
-using System;
 using InventorySystemUI;
 using UnityEngine;
 
 namespace InventorySystemController
 {
-    public class ShopController
+    public class ShopController : BaseInventoryController
     {
         private ShopUI shopUI;
         private ShopSO shopData;
         private UIController uiController;
         private PlayerInventory playerInventory;
         private int shopItemsListSize;
-        private int shopMoney;
 
-        public ShopUI GetShopUI() => shopUI;
-
-        public int GetMoney() => shopMoney;
-
-        public void SetMoney(int amount)
-        {
-            shopMoney = amount;
-            OnMoneyChanged?.Invoke(shopMoney);
-        }
-
-        public event Action<int> OnMoneyChanged;
-
-        public ShopController(ShopUI shopUI, ShopSO shopData, UIController uiManager, PlayerInventory playerInventory, int shopItemsListSize = 7, int initialMoney = 1000)
+        public ShopController(ShopUI shopUI, ShopSO shopData, UIController uiManager, PlayerInventory playerInventory, int shopItemsListSize = 7)
         {
             this.shopUI = shopUI;
             this.shopData = shopData;
             uiController = uiManager;
             this.playerInventory = playerInventory;
             this.shopItemsListSize = shopItemsListSize;
-            shopMoney = initialMoney;
 
             InitializeShopController();
         }
@@ -45,10 +30,10 @@ namespace InventorySystemController
             SetUpUI();
         }
 
-        private void SetUpUI()
+        protected override void SetUpUI()
         {
             shopUI.InitializeUIList(shopItemsListSize);
-            shopUI.OnDescriptionRequested += OnShopDescriptionRequested;
+            shopUI.OnDescriptionRequested += OnDescriptionRequested;
 
             foreach (var item in shopData.GetCurrentShopItemState())
             {
@@ -56,7 +41,7 @@ namespace InventorySystemController
             }
         }
 
-        private void OnShopDescriptionRequested(int itemIndex)
+        protected override void OnDescriptionRequested(int itemIndex)
         {
             Items shopItem = shopData.GetItemAt(itemIndex);
 

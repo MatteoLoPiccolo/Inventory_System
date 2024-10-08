@@ -3,10 +3,11 @@ using System;
 using System.Collections.Generic;
 using InventorySystemUI;
 using UnityEngine;
+using InventorySystemInterfaces;
 
 namespace InventorySystemPlayer
 {
-    public class PlayerInventory : MonoBehaviour
+    public class PlayerInventory : MonoBehaviour, IMoneyManager
     {
         [SerializeField] private PlayerInventoryUI playerInventoryUI;
         [SerializeField] private ShopUI shopUI;
@@ -18,22 +19,10 @@ namespace InventorySystemPlayer
         public event Action<ItemSO, int> OnInventoryItemAdded;
         public event Action<ItemSO, int> OnInventoryItemRemove;
 
-        public int InventoryMoney
-        {
-            get => inventoryMoney;
-            private set
-            {
-                inventoryMoney = value;
-                OnMoneyChanged?.Invoke(inventoryMoney);
-            }
-        }
-
         private void Awake()
         {
-            inventoryMoney = 100;
             ResetInventory();
         }
-
 
         private void ResetInventory()
         {
@@ -82,12 +71,13 @@ namespace InventorySystemPlayer
 
         public int GetMoney()
         {
-            return InventoryMoney;
+            return inventoryMoney;
         }
 
         public void SetMoney(int newAmount)
         {
-            InventoryMoney = newAmount;
+            inventoryMoney = newAmount;
+            OnMoneyChanged?.Invoke(inventoryMoney);
         }
     }
 }

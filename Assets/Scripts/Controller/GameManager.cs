@@ -12,7 +12,6 @@ namespace InventorySystemController
         [SerializeField] private PlayerInventoryUI playerInventoryUI;
         [SerializeField] private PlayerInventory playerInventory;
         [SerializeField] private UIController uiController;
-        [SerializeField] private UiItemDescription itemDescription;
         [SerializeField] private PurchasePopupUI purchasePopupUI;
         [SerializeField] private int listCount = 7;
         [SerializeField] private int shopMoney = 1000;
@@ -32,6 +31,8 @@ namespace InventorySystemController
 
         public InventoryController InventoryController { get { return inventoryController; } }
 
+        public ShopUI ShopUI { get { return shopUI; } }
+
         private void Awake()
         {
             if (instance != null && instance != this)
@@ -39,8 +40,10 @@ namespace InventorySystemController
             else
                 instance = this;
 
-            inventoryController = new InventoryController(playerInventoryUI, playerInventory, shopData, shopUI, inventoryMoney);
+            inventoryController = new InventoryController(playerInventoryUI, playerInventory, shopData, shopUI);
             inputManager = new InputManager();
+
+            
         }
 
         private void Start()
@@ -50,7 +53,11 @@ namespace InventorySystemController
             else
                 inputManager.OnInventoryTogglePressed += uiController.ToggleShop;
 
-            shopController = new ShopController(shopUI, shopData, uiController, playerInventory, listCount, shopMoney);
+            shopController = new ShopController(shopUI, shopData, uiController, playerInventory, listCount);
+            shopController.SetMoney(shopMoney);
+
+            inventoryController.SetMoney(inventoryMoney);
+
         }
 
         private void Update()
